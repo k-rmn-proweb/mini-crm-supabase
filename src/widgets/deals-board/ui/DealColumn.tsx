@@ -19,7 +19,7 @@ export function DealColumn({ stage, deals, clientNameById, onCardClick }: Props)
       ref={setNodeRef}
       className={cn(
         'flex w-72 shrink-0 flex-col rounded-lg bg-muted/40 p-2 transition-colors',
-        isOver && 'bg-muted ring-2 ring-ring/40',
+        isOver && 'bg-muted ring-2 ring-ring/40 ring-inset',
       )}
     >
       <div className="flex items-center justify-between px-1 py-1.5">

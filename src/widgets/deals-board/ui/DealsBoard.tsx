@@ -94,7 +94,7 @@ export function DealsBoard() {
           ))}
         </div>
 
-        <DragOverlay>
+        <DragOverlay dropAnimation={null}>
           {activeDeal ? (
             <DealCard deal={activeDeal} clientName={clientNameById(activeDeal.client_id)} />
           ) : null}

@@ -87,11 +87,65 @@ shared/utils/
 - Импорт — через barrel: `import { cn } from '@/shared/utils'`.
 
 **`shared/lib`** — «библиотечные» модули посложнее: обёртки над сторонними либами,
-фабрики, интеграции, сконфигурированные инстансы. Тоже сегментировано по папкам
-(`shared/lib/<name>/index.ts`), не свалкой. Создаётся, когда появляется первый такой модуль.
+фабрики, интеграции, сконфигурированные инстансы. Сегментировано по папкам
+(`shared/lib/<name>/index.ts`), не свалкой.
+
+```
+shared/lib/
+  react-query/
+    client.ts   # сконфигурированный queryClient (new QueryClient({...}))
+    index.ts
+  index.ts      # общий barrel: export * from './react-query'
+```
+
+- `queryClient` живёт здесь (сконфигурированный инстанс библиотеки), а НЕ в `app`.
+  Слой `app` отвечает только за разводку провайдеров (`QueryClientProvider`) и импортит
+  клиент из `@/shared/lib`. Плюс: инстанс доступен любому слою (напр., императивная инвалидация),
+  тогда как из `app` нижние слои импортировать не могут (границы FSD).
 
 Правило разграничения: «чистая функция без зависимостей от инфраструктуры» → `utils`;
 «обёртка/интеграция/конфигурация вокруг библиотеки» → `lib`.
 
+**Query-ключи и эндпоинты — НЕ в shared.** Они привязаны к ресурсу → живут в его сущности.
+См. раздел «Data-access» ниже. `shared/api` остаётся только под транспорт.
+
 > shadcn ждёт `cn` по алиасу `utils` в `components.json` → указывает на `@/shared/utils/cn`.
 > Сгенерированные компоненты импортируют `@/shared/utils/cn`; при рефакторинге меняем на barrel `@/shared/utils`.
+
+## Data-access: эндпоинты, ключи, хуки (entities + features)
+
+Единый источник правды по ресурсу — его **сущность**. Централизация пер-ресурсная,
+не глобальная: и read, и write определяются один раз в `entities/<entity>/api`,
+а `features` их только используют. Так эндпоинты и ключи не разбросаны по слоям.
+
+```
+entities/client/api/
+  client.keys.ts      # фабрика query-ключей (единственное определение ключей клиента)
+  client.api.ts       # ВСЕ эндпоинты клиента: fetchClients, fetchClientById,
+                      #   createClient, updateClient, deleteClient
+                      #   — чистые async-функции: возвращают данные, кидают ошибку.
+                      #   Единственное место сырых supabase-запросов клиента.
+  client.queries.ts   # read-хуки: useClientsQuery, useClientQuery (keys + api)
+  index.ts            # публичный API: keys, api-методы, read-хуки
+
+features/client-create-edit/api/
+  use-create-client.ts  # useMutation → client.api.createClient + инвалидация client.keys
+  use-update-client.ts
+  index.ts
+```
+
+**Разделение ответственности:**
+
+- `entities/<entity>/api` = **data-access слой ресурса**: ключи + все эндпоинты (read и write) + read-хуки.
+- `features/<action>/api` = **оркестрация действия пользователя**: mutation-хук (вызвать эндпоинт
+  из сущности + инвалидировать её ключи + тост + связка с формой). Фича НЕ переопределяет
+  эндпоинты и ключи — импортирует готовые из `@/entities/<entity>`.
+- Границы FSD целы: `features → entities` разрешён; сущность про фичи не знает.
+
+**Правила:**
+
+- Определение эндпоинта и ключа — один раз, в сущности. Дубликатов в фичах быть не должно.
+- `*.api.ts` — только транспорт-вызовы, без React и без query-кеша (чистые функции).
+  Кеш/хуки — в `*.queries.ts` (read) и в фичах (write).
+- Файлы — kebab-case (`client.api.ts`, `use-create-client.ts`). Ключи — фабрика-объект
+  (`clientKeys.all / lists() / list(filters) / details() / detail(id)`).

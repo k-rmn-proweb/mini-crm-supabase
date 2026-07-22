@@ -13,9 +13,12 @@ const envSchema = z.object({
 // Trim first: a stray newline/space (e.g. pasted into a hosting env var) would otherwise
 // slip into the anon key and make an invalid `apikey`/`Authorization` header — fetch then
 // throws "Failed to execute 'fetch': Invalid value" before the request is even sent.
+// Non-strings pass through untouched so a missing var still yields Zod's "required" message.
+const trim = (value: unknown): unknown => (typeof value === 'string' ? value.trim() : value)
+
 const rawEnv = {
-  VITE_SUPABASE_URL: import.meta.env.VITE_SUPABASE_URL?.trim(),
-  VITE_SUPABASE_ANON_KEY: import.meta.env.VITE_SUPABASE_ANON_KEY?.trim(),
+  VITE_SUPABASE_URL: trim(import.meta.env.VITE_SUPABASE_URL),
+  VITE_SUPABASE_ANON_KEY: trim(import.meta.env.VITE_SUPABASE_ANON_KEY),
 }
 
 const parsed = envSchema.safeParse(rawEnv)

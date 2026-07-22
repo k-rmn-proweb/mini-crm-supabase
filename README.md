@@ -54,7 +54,7 @@ src/
   widgets/    # крупные блоки UI (таблицы, доски, графики)
   features/   # действия пользователя (мутации, формы, диалоги)
   entities/   # бизнес-сущности (модель, query-хуки, базовый UI)
-  shared/     # переиспользуемое: api (Supabase), ui (shadcn), lib, config, store
+  shared/     # переиспользуемое: api (Supabase), ui (shadcn), utils, lib, config, store
 ```
 
 ## Переменные окружения

@@ -16,13 +16,13 @@ export function AppSidebar() {
         collapsed ? 'w-16' : 'w-56',
       )}
     >
-      <div className={cn('flex h-14 items-center px-4', collapsed && 'justify-center px-0')}>
+      <div
+        className={cn(
+          'flex h-14 items-center border-b px-3',
+          collapsed ? 'justify-center' : 'justify-between',
+        )}
+      >
         {!collapsed && <span className="font-heading text-lg font-semibold">Mini-CRM</span>}
-      </div>
-
-      <SidebarNav collapsed={collapsed} />
-
-      <div className={cn('mt-auto p-2', collapsed && 'flex justify-center')}>
         <Button
           variant="ghost"
           size="icon-sm"
@@ -31,6 +31,10 @@ export function AppSidebar() {
         >
           {collapsed ? <PanelLeftOpen /> : <PanelLeftClose />}
         </Button>
+      </div>
+
+      <div className="flex-1 overflow-y-auto py-2">
+        <SidebarNav collapsed={collapsed} />
       </div>
     </aside>
   )

@@ -1,5 +1,15 @@
 import { useState } from 'react'
-import { ChevronLeft, ChevronRight, Pencil, Plus, Search, Trash2, Users } from 'lucide-react'
+import {
+  ChevronLeft,
+  ChevronRight,
+  Loader2,
+  Pencil,
+  Plus,
+  Search,
+  Trash2,
+  Users,
+  X,
+} from 'lucide-react'
 import {
   Button,
   EmptyState,
@@ -52,6 +62,8 @@ export function ClientsTable() {
   const total = data?.total ?? 0
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE))
   const hasFilters = debouncedSearch !== '' || status !== 'all'
+  // Спиннер, пока поиск «оседает»: набор ждёт дебаунса или идёт запрос по поиску.
+  const searchPending = search !== debouncedSearch || (isFetching && debouncedSearch !== '')
 
   return (
     <div className="space-y-4">
@@ -70,8 +82,22 @@ export function ClientsTable() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Поиск по имени или компании"
-            className="pl-8"
+            className="px-8"
           />
+          <div className="absolute top-1/2 right-2 flex size-5 -translate-y-1/2 items-center justify-center">
+            {searchPending ? (
+              <Loader2 className="size-4 animate-spin text-muted-foreground" />
+            ) : search ? (
+              <button
+                type="button"
+                onClick={() => setSearch('')}
+                aria-label="Очистить поиск"
+                className="text-muted-foreground transition-colors hover:text-foreground"
+              >
+                <X className="size-4" />
+              </button>
+            ) : null}
+          </div>
         </div>
         <Select value={status} onValueChange={(value) => setStatus(value as typeof status)}>
           <SelectTrigger className="w-44">

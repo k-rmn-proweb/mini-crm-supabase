@@ -1,6 +1,7 @@
 // Публичный API сущности activity.
 export { useClientActivitiesQuery } from './model/useClientActivitiesQuery'
 export { useRecentActivitiesQuery } from './model/useRecentActivitiesQuery'
+export { useActivitiesRealtime } from './model/useActivitiesRealtime'
 export { ActivityItem } from './ui/ActivityItem'
 export { ACTIVITY_TYPE_LABELS, ACTIVITY_TYPE_OPTIONS } from './model/consts'
 export { activityKeys } from './api/keys'

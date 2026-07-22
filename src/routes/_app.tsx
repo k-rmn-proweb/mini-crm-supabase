@@ -2,6 +2,7 @@ import { Outlet, createFileRoute, redirect } from '@tanstack/react-router'
 import { supabase } from '@/shared/api'
 import { AppSidebar, MobileSidebar } from '@/widgets/app-sidebar'
 import { AppHeader } from '@/widgets/app-header'
+import { RealtimeSync } from '@/widgets/realtime-sync'
 
 /** Защищённая зона. Нет сессии — на /login. Сессию читаем напрямую (race-free). */
 export const Route = createFileRoute('/_app')({
@@ -17,6 +18,7 @@ export const Route = createFileRoute('/_app')({
 function AppLayout() {
   return (
     <div className="flex min-h-svh">
+      <RealtimeSync />
       <AppSidebar />
       <MobileSidebar />
       <div className="flex min-w-0 flex-1 flex-col">

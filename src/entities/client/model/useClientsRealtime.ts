@@ -1,0 +1,27 @@
+import { useEffect } from 'react'
+import { supabase } from '@/shared/api'
+import { queryClient } from '@/shared/lib'
+import { clientKeys } from '../api/keys'
+
+/** Подписка на изменения клиентов (Realtime) → инвалидация ключей → авто-рефетч. */
+export function useClientsRealtime(userId?: string) {
+  useEffect(() => {
+    if (!userId) {
+      return
+    }
+    const channel = supabase
+      .channel(`clients:${userId}`)
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'clients', filter: `user_id=eq.${userId}` },
+        () => {
+          queryClient.invalidateQueries({ queryKey: clientKeys.all })
+        },
+      )
+      .subscribe()
+
+    return () => {
+      supabase.removeChannel(channel)
+    }
+  }, [userId])
+}

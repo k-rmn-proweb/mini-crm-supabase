@@ -1,6 +1,7 @@
 // Публичный API сущности deal.
 export { useDealsQuery } from './model/useDealsQuery'
 export { useClientDealsQuery } from './model/useClientDealsQuery'
+export { useDealsRealtime } from './model/useDealsRealtime'
 export { DealCard } from './ui/DealCard'
 export { DealStageBadge } from './ui/DealStageBadge'
 export {

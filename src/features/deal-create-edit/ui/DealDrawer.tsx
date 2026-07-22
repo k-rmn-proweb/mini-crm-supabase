@@ -12,7 +12,9 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@/shared/ui'
+import { getErrorMessage } from '@/shared/utils'
 import type { Deal } from '@/entities/deal'
+import { useCreateDeal } from '../model/useCreateDeal'
 import { useUpdateDeal } from '../model/useUpdateDeal'
 import { useDeleteDeal } from '../model/useDeleteDeal'
 import { dealFormSchema, type DealFormValues } from '../lib/schema'
@@ -20,18 +22,84 @@ import { toDealDto, toDealFormValues } from '../lib/mappers'
 import { DealFields } from './DealFields'
 
 type Props = {
-  deal: Deal | null
+  open: boolean
   onOpenChange: (open: boolean) => void
+  /** Есть сделка — режим редактирования; нет — создание. */
+  deal?: Deal
+  /** Вызывается с созданной сделкой (для подсветки на доске). */
+  onSaved?: (deal: Deal) => void
 }
 
-/** Редактирование сделки в правом drawer'е с авто-сохранением. */
-export function DealEditDrawer({ deal, onOpenChange }: Props) {
+/** Создание и редактирование сделки в правом drawer'е. */
+export function DealDrawer({ open, onOpenChange, deal, onSaved }: Props) {
   return (
-    <Sheet open={deal !== null} onOpenChange={onOpenChange}>
+    <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent side="right" showCloseButton={false} className="gap-0 p-0 sm:max-w-md">
-        {deal && <DealEditForm key={deal.id} deal={deal} onClose={() => onOpenChange(false)} />}
+        {deal ? (
+          <DealEditForm key={deal.id} deal={deal} onClose={() => onOpenChange(false)} />
+        ) : (
+          <DealCreateForm onClose={() => onOpenChange(false)} onSaved={onSaved} />
+        )}
       </SheetContent>
     </Sheet>
+  )
+}
+
+function DealCreateForm({
+  onClose,
+  onSaved,
+}: {
+  onClose: () => void
+  onSaved?: (deal: Deal) => void
+}) {
+  const createMutation = useCreateDeal()
+  const values = useMemo(() => toDealFormValues(undefined), [])
+  const form = useForm<DealFormValues>({ resolver: zodResolver(dealFormSchema), values })
+
+  const submit = form.handleSubmit((formValues) => {
+    createMutation.mutate(toDealDto(formValues), {
+      onSuccess: (created) => {
+        onClose()
+        onSaved?.(created)
+      },
+    })
+  })
+
+  return (
+    <>
+      <SheetHeader className="flex-row items-center justify-between gap-2 space-y-0 border-b">
+        <SheetTitle>Новая сделка</SheetTitle>
+        <SheetDescription className="sr-only">Форма создания сделки.</SheetDescription>
+        <SheetClose asChild>
+          <Button variant="ghost" size="icon-sm" aria-label="Закрыть">
+            <X />
+          </Button>
+        </SheetClose>
+      </SheetHeader>
+
+      <form
+        id="deal-create-form"
+        onSubmit={(e) => submit(e)}
+        className="flex-1 space-y-4 overflow-y-auto p-4"
+        noValidate
+      >
+        {createMutation.isError && (
+          <p className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">
+            {getErrorMessage(createMutation.error)}
+          </p>
+        )}
+        <DealFields form={form} />
+      </form>
+
+      <SheetFooter className="flex-row justify-end gap-2 border-t">
+        <Button type="button" variant="outline" onClick={onClose}>
+          Отмена
+        </Button>
+        <Button type="submit" form="deal-create-form" disabled={createMutation.isPending}>
+          {createMutation.isPending ? 'Создание…' : 'Создать'}
+        </Button>
+      </SheetFooter>
+    </>
   )
 }
 

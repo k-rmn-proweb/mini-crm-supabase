@@ -13,17 +13,18 @@ import { Plus } from 'lucide-react'
 import { Button, ErrorState, Skeleton } from '@/shared/ui'
 import { useClientOptions } from '@/entities/client'
 import { DealCard, DEAL_STAGES, useDealsQuery, type Deal, type DealStage } from '@/entities/deal'
-import { DealEditDrawer, DealFormDialog } from '@/features/deal-create-edit'
+import { DealDrawer } from '@/features/deal-create-edit'
 import { useUpdateDealStage } from '@/features/deal-change-stage'
 import { DealColumn } from './DealColumn'
+
+type DrawerState = { open: boolean; deal?: Deal }
 
 export function DealsBoard() {
   const { data: deals, isLoading, isError, refetch } = useDealsQuery()
   const { data: clients } = useClientOptions()
   const updateStage = useUpdateDealStage()
 
-  const [createOpen, setCreateOpen] = useState(false)
-  const [editDeal, setEditDeal] = useState<Deal | null>(null)
+  const [drawer, setDrawer] = useState<DrawerState>({ open: false })
   const [activeDeal, setActiveDeal] = useState<Deal | null>(null)
   const [highlightedId, setHighlightedId] = useState<string | null>(null)
 
@@ -79,7 +80,7 @@ export function DealsBoard() {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h1 className="font-heading text-2xl font-semibold">Сделки</h1>
-        <Button onClick={() => setCreateOpen(true)}>
+        <Button onClick={() => setDrawer({ open: true })}>
           <Plus />
           Добавить сделку
         </Button>
@@ -99,7 +100,7 @@ export function DealsBoard() {
               deals={dealsByStage[stage]}
               clientNameById={clientNameById}
               highlightedId={highlightedId}
-              onCardClick={(deal) => setEditDeal(deal)}
+              onCardClick={(deal) => setDrawer({ open: true, deal })}
             />
           ))}
         </div>
@@ -111,18 +112,11 @@ export function DealsBoard() {
         </DragOverlay>
       </DndContext>
 
-      <DealFormDialog
-        open={createOpen}
+      <DealDrawer
+        open={drawer.open}
+        deal={drawer.deal}
         onSaved={(deal) => highlight(deal.id)}
-        onOpenChange={setCreateOpen}
-      />
-      <DealEditDrawer
-        deal={editDeal}
-        onOpenChange={(open) => {
-          if (!open) {
-            setEditDeal(null)
-          }
-        }}
+        onOpenChange={(open) => setDrawer((prev) => ({ ...prev, open }))}
       />
     </div>
   )

@@ -47,13 +47,16 @@ export default tseslint.config(
         typescript: { project: './tsconfig.json' },
       },
       'boundaries/include': ['src/**/*'],
+      // Слайсовые слои (pages/widgets/features/entities) описаны как `*/**`:
+      // каждый слайс — отдельный элемент. Импорт ВНУТРИ слайса считается внутренним
+      // и не проверяется; импорт между слайсами одного слоя — уже нарушение.
       'boundaries/elements': [
         { type: 'app', pattern: 'src/app/**' },
         { type: 'routes', pattern: 'src/routes/**' },
-        { type: 'pages', pattern: 'src/pages/**' },
-        { type: 'widgets', pattern: 'src/widgets/**' },
-        { type: 'features', pattern: 'src/features/**' },
-        { type: 'entities', pattern: 'src/entities/**' },
+        { type: 'pages', pattern: 'src/pages/*/**', capture: ['slice'] },
+        { type: 'widgets', pattern: 'src/widgets/*/**', capture: ['slice'] },
+        { type: 'features', pattern: 'src/features/*/**', capture: ['slice'] },
+        { type: 'entities', pattern: 'src/entities/*/**', capture: ['slice'] },
         { type: 'shared', pattern: 'src/shared/**' },
       ],
     },
@@ -66,15 +69,18 @@ export default tseslint.config(
         'error',
         {
           default: 'disallow',
+          // Только импорт ВНИЗ по слоям. Правила «свой слой разрешён» НЕТ:
+          // внутрислайсовые импорты внутренние (не проверяются), а между
+          // слайсами одного слоя — запрещены (cross-slice import).
           policies: [
-            // app и routes — верх композиции, импортируют всё
+            // app и routes — верх композиции
             {
               from: { element: { type: 'app' } },
-              allow: { to: { element: { type: FSD_LAYERS } } },
+              allow: { to: { element: { type: ['routes', ...below('app')] } } },
             },
             {
               from: { element: { type: 'routes' } },
-              allow: { to: { element: { type: FSD_LAYERS } } },
+              allow: { to: { element: { type: below('app') } } },
             },
             {
               from: { element: { type: 'pages' } },
@@ -92,13 +98,18 @@ export default tseslint.config(
               from: { element: { type: 'entities' } },
               allow: { to: { element: { type: below('entities') } } },
             },
-            // Импорт внутри своего слоя разрешён
-            {
-              from: { element: { type: '*' } },
+            // Импорт ВНУТРИ своего слайса разрешён (тот же слой + совпадающий slice)
+            ...['pages', 'widgets', 'features', 'entities'].map((layer) => ({
+              from: { element: { type: layer } },
               allow: {
-                to: { element: { type: '*', captured: { $eq: ['{{ from.element.type }}'] } } },
+                to: {
+                  element: {
+                    type: layer,
+                    captured: { slice: '{{ from.captured.slice }}' },
+                  },
+                },
               },
-            },
+            })),
           ],
         },
       ],

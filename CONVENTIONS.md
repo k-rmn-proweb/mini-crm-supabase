@@ -4,7 +4,10 @@
 
 ## Общее
 
-- **FSD**, зависимости строго вниз: `app → routes → pages → widgets → features → entities → shared`. Контроль — ESLint (`boundaries/dependencies`).
+- **FSD**, зависимости строго вниз: `app → routes → pages → widgets → features → entities → shared`.
+  Контроль — ESLint (`boundaries/dependencies`), **slice-aware**: разрешён импорт только вниз по
+  слоям + внутри своего слайса. Между слайсами одного слоя (`entities/deal → entities/client`) —
+  ошибка (в т.ч. через относительный путь). Кросс-сущностная связка — на верхнем слое (widget/page).
 - Публичный API каждого слайса — `index.ts` (barrel). Наружу импортируем только через него.
 - TypeScript strict, без `any` без явного обоснования.
 - Серверное состояние — только TanStack Query; клиентское UI-состояние — только Zustand. Не смешивать.

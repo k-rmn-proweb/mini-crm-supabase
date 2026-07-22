@@ -1,11 +1,13 @@
 import { Outlet, createFileRoute, redirect } from '@tanstack/react-router'
+import { supabase } from '@/shared/api'
 import { AppSidebar } from '@/widgets/app-sidebar'
 import { AppHeader } from '@/widgets/app-header'
 
-/** Защищённая зона. Нет сессии — на /login. */
+/** Защищённая зона. Нет сессии — на /login. Сессию читаем напрямую (race-free). */
 export const Route = createFileRoute('/_app')({
-  beforeLoad: ({ context }) => {
-    if (!context.auth.session) {
+  beforeLoad: async () => {
+    const { data } = await supabase.auth.getSession()
+    if (!data.session) {
       throw redirect({ to: '/login' })
     }
   },

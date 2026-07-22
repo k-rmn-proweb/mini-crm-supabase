@@ -1,9 +1,11 @@
 import { Outlet, createFileRoute, redirect } from '@tanstack/react-router'
+import { supabase } from '@/shared/api'
 
 /** Публичная зона (login/register). Если уже вошёл — на дашборд. */
 export const Route = createFileRoute('/_auth')({
-  beforeLoad: ({ context }) => {
-    if (context.auth.session) {
+  beforeLoad: async () => {
+    const { data } = await supabase.auth.getSession()
+    if (data.session) {
       throw redirect({ to: '/' })
     }
   },

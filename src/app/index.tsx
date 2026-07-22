@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { RouterProvider } from '@tanstack/react-router'
 import { ErrorBoundary } from '@/shared/ui'
+import { useApplyTheme } from '@/shared/hooks'
 import { AuthProvider, useAuth } from '@/entities/user'
 import { AppProviders } from './providers'
 import { router } from './router'
@@ -26,6 +27,8 @@ function InnerApp() {
 }
 
 export function App() {
+  useApplyTheme()
+
   return (
     <ErrorBoundary>
       <AppProviders>

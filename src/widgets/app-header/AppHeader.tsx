@@ -2,6 +2,7 @@ import { Menu } from 'lucide-react'
 import { useUiStore } from '@/shared/store'
 import { Button } from '@/shared/ui'
 import { useProfile, useSession } from '@/entities/user'
+import { ThemeToggle } from '@/features/theme-toggle'
 import { LogoutButton } from '@/features/auth-logout'
 
 export function AppHeader() {
@@ -24,8 +25,9 @@ export function AppHeader() {
         </Button>
         <span className="font-heading text-lg font-semibold md:hidden">Mini-CRM</span>
       </div>
-      <div className="ml-auto flex items-center gap-3">
+      <div className="ml-auto flex items-center gap-2">
         <span className="hidden text-sm text-muted-foreground sm:inline">{name}</span>
+        <ThemeToggle />
         <LogoutButton />
       </div>
     </header>

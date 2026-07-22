@@ -1,6 +1,13 @@
 // Публичный API слоя shared/ui — общий barrel.
 // На каждый компонент — одна строка реэкспорта из его папки.
+export * from './alert-dialog'
 export * from './button'
 export * from './card'
+export * from './dialog'
+export * from './empty-state'
+export * from './error-state'
 export * from './input'
 export * from './label'
+export * from './select'
+export * from './skeleton'
+export * from './table'

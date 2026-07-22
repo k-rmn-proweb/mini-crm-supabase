@@ -130,6 +130,8 @@ export default tseslint.config(
         'error',
         { ignorePrimitives: { string: true } },
       ],
+      // () => setState(x) в хендлерах/сеттерах — нормальный React-паттерн
+      '@typescript-eslint/no-confusing-void-expression': ['error', { ignoreArrowShorthand: true }],
     },
   },
 

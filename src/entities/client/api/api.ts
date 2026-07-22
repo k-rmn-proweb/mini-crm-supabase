@@ -33,6 +33,15 @@ export async function fetchClients(params: ClientsQueryParams): Promise<ClientsP
   return { rows: data, total: count ?? 0 }
 }
 
+/** Все клиенты пользователя как опции (id + name) — для выпадающих списков. */
+export async function fetchClientOptions(): Promise<Pick<Client, 'id' | 'name'>[]> {
+  const { data, error } = await supabase.from('clients').select('id, name').order('name')
+  if (error) {
+    throw error
+  }
+  return data
+}
+
 /** Один клиент по id. */
 export async function fetchClientById(id: string): Promise<Client> {
   const { data, error } = await supabase.from('clients').select('*').eq('id', id).single()

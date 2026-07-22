@@ -15,6 +15,19 @@ export async function fetchActivitiesByClient(clientId: string): Promise<Activit
   return data
 }
 
+/** Последние активности по всем клиентам (лента дашборда). */
+export async function fetchRecentActivities(limit = 8): Promise<Activity[]> {
+  const { data, error } = await supabase
+    .from('activities')
+    .select('*')
+    .order('created_at', { ascending: false })
+    .limit(limit)
+  if (error) {
+    throw error
+  }
+  return data
+}
+
 /** Создать активность. user_id проставляется из текущей сессии. */
 export async function createActivity(dto: CreateActivityDto): Promise<Activity> {
   const { data: sessionData } = await supabase.auth.getSession()

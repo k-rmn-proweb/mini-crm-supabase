@@ -42,6 +42,15 @@ export async function fetchClientOptions(): Promise<Pick<Client, 'id' | 'name'>[
   return data
 }
 
+/** Клиенты для агрегатов дашборда (только status + created_at). */
+export async function fetchClientStats(): Promise<Pick<Client, 'id' | 'status' | 'created_at'>[]> {
+  const { data, error } = await supabase.from('clients').select('id, status, created_at')
+  if (error) {
+    throw error
+  }
+  return data
+}
+
 /** Один клиент по id. */
 export async function fetchClientById(id: string): Promise<Client> {
   const { data, error } = await supabase.from('clients').select('*').eq('id', id).single()

@@ -6,6 +6,7 @@ export const clientKeys = {
   lists: () => [...clientKeys.all, 'list'] as const,
   list: (params: ClientsQueryParams) => [...clientKeys.lists(), params] as const,
   options: () => [...clientKeys.all, 'options'] as const,
+  stats: () => [...clientKeys.all, 'stats'] as const,
   details: () => [...clientKeys.all, 'detail'] as const,
   detail: (id: string) => [...clientKeys.details(), id] as const,
 }

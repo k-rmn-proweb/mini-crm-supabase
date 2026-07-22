@@ -10,7 +10,13 @@ const ICONS: Record<ActivityType, LucideIcon> = {
   note: StickyNote,
 }
 
-export function ActivityItem({ activity }: { activity: Activity }) {
+export function ActivityItem({
+  activity,
+  clientName,
+}: {
+  activity: Activity
+  clientName?: string
+}) {
   const Icon = ICONS[activity.type]
 
   return (
@@ -20,7 +26,12 @@ export function ActivityItem({ activity }: { activity: Activity }) {
       </div>
       <div className="min-w-0 flex-1 space-y-0.5">
         <div className="flex items-center justify-between gap-2">
-          <span className="text-sm font-medium">{ACTIVITY_TYPE_LABELS[activity.type]}</span>
+          <span className="text-sm font-medium">
+            {ACTIVITY_TYPE_LABELS[activity.type]}
+            {clientName && (
+              <span className="font-normal text-muted-foreground"> · {clientName}</span>
+            )}
+          </span>
           <span className="shrink-0 text-xs text-muted-foreground">
             {formatDate(activity.created_at)}
           </span>

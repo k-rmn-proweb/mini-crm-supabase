@@ -2,12 +2,14 @@
 export { useClientsQuery } from './model/useClientsQuery'
 export { useClientQuery } from './model/useClientQuery'
 export { useClientOptions } from './model/useClientOptions'
+export { useClientStats } from './model/useClientStats'
 export { ClientStatusBadge } from './ui/ClientStatusBadge'
 export { CLIENT_STATUS_LABELS, CLIENT_STATUS_OPTIONS } from './model/consts'
 export { clientKeys } from './api/keys'
 export {
   fetchClients,
   fetchClientOptions,
+  fetchClientStats,
   fetchClientById,
   createClient,
   updateClient,

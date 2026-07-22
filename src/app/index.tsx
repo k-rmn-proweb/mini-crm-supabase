@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { RouterProvider } from '@tanstack/react-router'
+import { ErrorBoundary } from '@/shared/ui'
 import { AuthProvider, useAuth } from '@/entities/user'
 import { AppProviders } from './providers'
 import { router } from './router'
@@ -26,10 +27,12 @@ function InnerApp() {
 
 export function App() {
   return (
-    <AppProviders>
-      <AuthProvider>
-        <InnerApp />
-      </AuthProvider>
-    </AppProviders>
+    <ErrorBoundary>
+      <AppProviders>
+        <AuthProvider>
+          <InnerApp />
+        </AuthProvider>
+      </AppProviders>
+    </ErrorBoundary>
   )
 }

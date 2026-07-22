@@ -29,14 +29,14 @@ pnpm dev
 
 ## Скрипты
 
-| Команда | Назначение |
-|---|---|
-| `pnpm dev` | Dev-сервер (Vite) |
-| `pnpm build` | Production-сборка (`tsc -b && vite build`) |
-| `pnpm preview` | Предпросмотр собранного бандла |
-| `pnpm lint` | ESLint (включая контроль границ FSD) |
-| `pnpm typecheck` | Проверка типов без эмита |
-| `pnpm format` | Форматирование Prettier |
+| Команда          | Назначение                                 |
+| ---------------- | ------------------------------------------ |
+| `pnpm dev`       | Dev-сервер (Vite)                          |
+| `pnpm build`     | Production-сборка (`tsc -b && vite build`) |
+| `pnpm preview`   | Предпросмотр собранного бандла             |
+| `pnpm lint`      | ESLint (включая контроль границ FSD)       |
+| `pnpm typecheck` | Проверка типов без эмита                   |
+| `pnpm format`    | Форматирование Prettier                    |
 
 ## Архитектура (FSD)
 

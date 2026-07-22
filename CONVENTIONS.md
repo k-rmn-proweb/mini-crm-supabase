@@ -77,8 +77,8 @@ shared/api/
   index.ts             # общий barrel: export * from './supabase'
 ```
 
-- Куда axios? В свой сегмент `shared/api/http/` (`client.ts` c `axios.create` и интерцепторами
-  + `index.ts`), а не отдельным файлом рядом с supabase. В текущем проекте axios не нужен —
+- Куда axios? В свой сегмент `shared/api/http/` (`client.ts` c `axios.create` и интерцепторами,
+  плюс `index.ts`), а не отдельным файлом рядом с supabase. В текущем проекте axios не нужен —
   транспорт это Supabase JS-клиент, данные ходят через TanStack Query.
 - Импорт в остальном коде — через общий barrel: `import { supabase } from '@/shared/api'`.
 
@@ -170,12 +170,12 @@ features/client-delete/    # отдельное действие (как в PRD)
 
 **Типы — где:**
 
-| Тип | Место |
-|---|---|
-| DB Row / Insert / Update (генерённые) | `shared/api/supabase/database.types.ts` |
-| Доменный `Client`, `ClientStatus` | `entities/client/model/types.ts` |
-| `CreateClientDto` / `UpdateClientDto` / response | `entities/client/api/dto.ts` |
-| Кросс-сущностная склейка (client+deals) | виджет/страница, что композирует |
+| Тип                                              | Место                                   |
+| ------------------------------------------------ | --------------------------------------- |
+| DB Row / Insert / Update (генерённые)            | `shared/api/supabase/database.types.ts` |
+| Доменный `Client`, `ClientStatus`                | `entities/client/model/types.ts`        |
+| `CreateClientDto` / `UpdateClientDto` / response | `entities/client/api/dto.ts`            |
+| Кросс-сущностная склейка (client+deals)          | виджет/страница, что композирует        |
 
 Тип живёт в самом низком слайсе, который им владеет; все выше импортируют его вниз.
 Доменные типы деривим из генерённых (`Tables<'clients'>`), не пишем вручную. Эндпоинт

@@ -45,3 +45,7 @@ pnpm-debug.log*
 # Vite / TS cache
 *.tsbuildinfo
 .vite/
+
+# Internal docs (kept local, not published)
+CONVENTIONS.md
+PRD_MiniCRM_Supabase.md

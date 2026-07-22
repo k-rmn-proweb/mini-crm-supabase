@@ -5,6 +5,7 @@ import type { LoginValues } from '../lib/schema'
 /** Вход по email/паролю. Сессию подхватит AuthProvider через onAuthStateChange. */
 export function useLogin() {
   return useMutation({
+    meta: { skipErrorToast: true },
     mutationFn: async (values: LoginValues) => {
       const { error } = await supabase.auth.signInWithPassword(values)
       if (error) {

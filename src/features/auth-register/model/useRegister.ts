@@ -8,6 +8,7 @@ import type { RegisterValues } from '../lib/schema'
  */
 export function useRegister() {
   return useMutation({
+    meta: { skipErrorToast: true },
     mutationFn: async ({ fullName, email, password }: RegisterValues) => {
       const { error } = await supabase.auth.signUp({
         email,

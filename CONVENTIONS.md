@@ -43,3 +43,27 @@ export * from './button'
 1. `pnpm dlx shadcn@latest add <name>` — CLI создаёт плоский `src/shared/ui/<name>.tsx`.
 2. Вручную разнести его на `Component.tsx` / `variants.ts` / `types.ts` / `index.ts` по структуре выше.
 3. Добавить `export * from './<name>'` в `src/shared/ui/index.ts`.
+
+## `shared/api`
+
+Только **транспорт и конфигурация клиентов** (низкий уровень). Бизнес-запросы
+(список клиентов, сделок и т.п.) сюда НЕ кладём — они живут в `entities/*/api`.
+
+Каждый клиент/транспорт — отдельный сегмент-папка, без плоской свалки файлов:
+
+```
+shared/api/
+  supabase/
+    client.ts          # createClient instance
+    database.types.ts  # сгенерированные типы БД (Supabase CLI)
+    index.ts           # barrel сегмента
+  http/                # пример: если понадобится REST-клиент (axios)
+    client.ts          #   axios.create + интерцепторы
+    index.ts
+  index.ts             # общий barrel: export * from './supabase'
+```
+
+- Куда axios? В свой сегмент `shared/api/http/` (`client.ts` c `axios.create` и интерцепторами
+  + `index.ts`), а не отдельным файлом рядом с supabase. В текущем проекте axios не нужен —
+  транспорт это Supabase JS-клиент, данные ходят через TanStack Query.
+- Импорт в остальном коде — через общий barrel: `import { supabase } from '@/shared/api'`.

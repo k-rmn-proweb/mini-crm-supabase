@@ -2,7 +2,7 @@
  * Типы схемы БД Supabase.
  *
  * ЗАГЛУШКА (Фаза 0). В Фазе 1 будет перегенерирована командой:
- *   supabase gen types typescript --project-id <id> > src/shared/api/database.types.ts
+ *   supabase gen types typescript --project-id <id> > src/shared/api/supabase/database.types.ts
  */
 export type Database = {
   public: {

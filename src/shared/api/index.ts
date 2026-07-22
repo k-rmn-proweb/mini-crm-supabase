@@ -1,2 +1,3 @@
-export { supabase } from './supabase'
-export type { Database } from './database.types'
+// Публичный API слоя shared/api — общий barrel.
+// Каждый клиент/транспорт — отдельным сегментом-папкой (supabase, http, ...).
+export * from './supabase'

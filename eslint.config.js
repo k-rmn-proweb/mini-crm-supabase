@@ -17,7 +17,12 @@ function below(layer) {
 export default tseslint.config(
   // Игнорируем сборку и сгенерированные файлы
   {
-    ignores: ['dist', 'node_modules', 'src/routeTree.gen.ts'],
+    ignores: [
+      'dist',
+      'node_modules',
+      'src/routeTree.gen.ts',
+      'src/shared/api/supabase/database.types.ts',
+    ],
   },
 
   // Базовые + строгие TS-правила (с проверкой типов) для исходников

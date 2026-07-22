@@ -8,7 +8,9 @@ import { DEMO_CREDENTIALS } from '../lib/consts'
 
 function toFriendly(error: unknown): string {
   const message = getErrorMessage(error)
-  if (message.includes('Invalid login credentials')) return 'Неверный email или пароль'
+  if (message.includes('Invalid login credentials')) {
+    return 'Неверный email или пароль'
+  }
   return message
 }
 
@@ -32,7 +34,7 @@ export function LoginForm({ onSuccess }: { onSuccess?: () => void }) {
   }
 
   return (
-    <form onSubmit={(e) => void submit(e)} className="space-y-4" noValidate>
+    <form onSubmit={(e) => submit(e)} className="space-y-4" noValidate>
       {login.isError && (
         <p className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">
           {toFriendly(login.error)}

@@ -132,6 +132,9 @@ export default tseslint.config(
       ],
       // () => setState(x) в хендлерах/сеттерах — нормальный React-паттерн
       '@typescript-eslint/no-confusing-void-expression': ['error', { ignoreArrowShorthand: true }],
+      // Без принудительного `void` перед промисами и без ошибок на async-хендлерах
+      '@typescript-eslint/no-floating-promises': 'off',
+      '@typescript-eslint/no-misused-promises': ['error', { checksVoidReturn: false }],
     },
   },
 
@@ -162,4 +165,13 @@ export default tseslint.config(
 
   // Prettier отключает форматные правила ESLint — идёт последним
   prettier,
+
+  // curly не конфликтует с Prettier, но eslint-config-prettier его гасит —
+  // возвращаем ПОСЛЕ него: всегда фигурные скобки в if/else/for/while
+  {
+    files: ['src/**/*.{ts,tsx}'],
+    rules: {
+      curly: ['error', 'all'],
+    },
+  },
 )

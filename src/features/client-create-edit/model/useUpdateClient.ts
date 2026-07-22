@@ -6,8 +6,8 @@ export function useUpdateClient() {
   return useMutation({
     mutationFn: ({ id, dto }: { id: string; dto: UpdateClientDto }) => updateClient(id, dto),
     onSuccess: (_data, { id }) => {
-      void queryClient.invalidateQueries({ queryKey: clientKeys.lists() })
-      void queryClient.invalidateQueries({ queryKey: clientKeys.detail(id) })
+      queryClient.invalidateQueries({ queryKey: clientKeys.lists() })
+      queryClient.invalidateQueries({ queryKey: clientKeys.detail(id) })
     },
   })
 }

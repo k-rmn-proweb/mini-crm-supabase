@@ -7,7 +7,9 @@ export function useLogout() {
   return useMutation({
     mutationFn: async () => {
       const { error } = await supabase.auth.signOut()
-      if (error) throw error
+      if (error) {
+        throw error
+      }
     },
     onSuccess: () => {
       queryClient.clear()

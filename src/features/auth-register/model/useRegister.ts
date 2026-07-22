@@ -14,7 +14,9 @@ export function useRegister() {
         password,
         options: { data: { full_name: fullName } },
       })
-      if (error) throw error
+      if (error) {
+        throw error
+      }
     },
   })
 }

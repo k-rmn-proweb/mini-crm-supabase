@@ -10,7 +10,7 @@ function InnerApp() {
 
   useEffect(() => {
     // При смене пользователя (login/logout) пересчитать гварды роутов.
-    void router.invalidate()
+    router.invalidate()
   }, [userId])
 
   if (auth.isLoading) {

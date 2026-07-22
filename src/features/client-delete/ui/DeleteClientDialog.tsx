@@ -21,7 +21,9 @@ export function DeleteClientDialog({ open, onOpenChange, client }: Props) {
   const deleteMutation = useDeleteClient()
 
   const confirm = () => {
-    if (!client) return
+    if (!client) {
+      return
+    }
     deleteMutation.mutate(client.id, {
       onSuccess: () => {
         onOpenChange(false)

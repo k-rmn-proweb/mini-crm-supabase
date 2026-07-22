@@ -15,7 +15,7 @@ export function LogoutButton() {
       onClick={() => {
         logout.mutate(undefined, {
           onSuccess: () => {
-            void navigate({ to: '/login' })
+            navigate({ to: '/login' })
           },
         })
       }}

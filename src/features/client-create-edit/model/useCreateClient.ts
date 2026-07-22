@@ -6,7 +6,7 @@ export function useCreateClient() {
   return useMutation({
     mutationFn: (dto: CreateClientDto) => createClient(dto),
     onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: clientKeys.lists() })
+      queryClient.invalidateQueries({ queryKey: clientKeys.lists() })
     },
   })
 }

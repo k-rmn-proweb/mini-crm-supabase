@@ -7,7 +7,9 @@ import { registerSchema, type RegisterValues } from '../lib/schema'
 
 function toFriendly(error: unknown): string {
   const message = getErrorMessage(error)
-  if (message.includes('already registered')) return 'Пользователь с таким email уже существует'
+  if (message.includes('already registered')) {
+    return 'Пользователь с таким email уже существует'
+  }
   return message
 }
 
@@ -27,7 +29,7 @@ export function RegisterForm({ onSuccess }: { onSuccess?: () => void }) {
   })
 
   return (
-    <form onSubmit={(e) => void submit(e)} className="space-y-4" noValidate>
+    <form onSubmit={(e) => submit(e)} className="space-y-4" noValidate>
       {registerMutation.isError && (
         <p className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">
           {toFriendly(registerMutation.error)}

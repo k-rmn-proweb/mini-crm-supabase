@@ -11,7 +11,9 @@ export function useProfile() {
   return useQuery({
     queryKey: userKeys.profile(userId ?? ''),
     queryFn: () => {
-      if (!userId) throw new Error('Нет активной сессии')
+      if (!userId) {
+        throw new Error('Нет активной сессии')
+      }
       return fetchProfile(userId)
     },
     enabled: Boolean(userId),

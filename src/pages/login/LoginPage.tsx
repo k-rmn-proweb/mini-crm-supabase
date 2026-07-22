@@ -14,7 +14,7 @@ export function LoginPage() {
       <CardContent className="space-y-4">
         <LoginForm
           onSuccess={() => {
-            void navigate({ to: '/' })
+            navigate({ to: '/' })
           }}
         />
         <p className="text-center text-sm text-muted-foreground">

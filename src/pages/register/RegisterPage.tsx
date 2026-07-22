@@ -14,7 +14,7 @@ export function RegisterPage() {
       <CardContent className="space-y-4">
         <RegisterForm
           onSuccess={() => {
-            void navigate({ to: '/' })
+            navigate({ to: '/' })
           }}
         />
         <p className="text-center text-sm text-muted-foreground">

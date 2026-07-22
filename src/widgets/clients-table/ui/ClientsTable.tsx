@@ -88,7 +88,7 @@ export function ClientsTable() {
       {isLoading ? (
         <ClientsTableSkeleton />
       ) : isError ? (
-        <ErrorState onRetry={() => void refetch()} />
+        <ErrorState onRetry={() => refetch()} />
       ) : clients && clients.length === 0 ? (
         <EmptyState
           icon={Users}

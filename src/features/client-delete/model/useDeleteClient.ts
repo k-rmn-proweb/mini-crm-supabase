@@ -6,7 +6,7 @@ export function useDeleteClient() {
   return useMutation({
     mutationFn: (id: string) => deleteClient(id),
     onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: clientKeys.lists() })
+      queryClient.invalidateQueries({ queryKey: clientKeys.lists() })
       // Каскад в БД сносит сделки/активности клиента — их ключи инвалидируем,
       // когда появятся entities deal/activity (Фаза 4/5).
     },

@@ -88,7 +88,7 @@ export function ClientFormDialog({ open, onOpenChange, client }: Props) {
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={(e) => void submit(e)} className="space-y-4" noValidate>
+        <form onSubmit={(e) => submit(e)} className="space-y-4" noValidate>
           {active.isError && (
             <p className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">
               {getErrorMessage(active.error)}

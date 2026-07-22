@@ -5,28 +5,35 @@ export type Theme = 'light' | 'dark'
 
 /**
  * Клиентское UI-состояние (Zustand).
- * ВАЖНО: только UI — сайдбар, тема, модалки, фильтры.
- * Серверные данные (клиенты/сделки/активности) живут в TanStack Query, не здесь.
+ * ВАЖНО: только UI — сайдбар, тема, модалки. Серверные данные — в TanStack Query.
  */
 type UiState = {
-  sidebarOpen: boolean
   theme: Theme
-  toggleSidebar: () => void
-  setSidebarOpen: (open: boolean) => void
+  /** Десктоп: сайдбар свёрнут до иконок. */
+  sidebarCollapsed: boolean
+  /** Мобайл: открыт drawer сайдбара. */
+  mobileSidebarOpen: boolean
   setTheme: (theme: Theme) => void
   toggleTheme: () => void
+  toggleSidebarCollapsed: () => void
+  setMobileSidebarOpen: (open: boolean) => void
 }
 
 export const useUiStore = create<UiState>()(
   persist(
     (set) => ({
-      sidebarOpen: true,
       theme: 'light',
-      toggleSidebar: () => set((s) => ({ sidebarOpen: !s.sidebarOpen })),
-      setSidebarOpen: (open) => set({ sidebarOpen: open }),
+      sidebarCollapsed: false,
+      mobileSidebarOpen: false,
       setTheme: (theme) => set({ theme }),
       toggleTheme: () => set((s) => ({ theme: s.theme === 'light' ? 'dark' : 'light' })),
+      toggleSidebarCollapsed: () => set((s) => ({ sidebarCollapsed: !s.sidebarCollapsed })),
+      setMobileSidebarOpen: (open) => set({ mobileSidebarOpen: open }),
     }),
-    { name: 'mini-crm-ui' },
+    {
+      name: 'mini-crm-ui',
+      // Мобильное открытие — транзиентное, не персистим.
+      partialize: (s) => ({ theme: s.theme, sidebarCollapsed: s.sidebarCollapsed }),
+    },
   ),
 )

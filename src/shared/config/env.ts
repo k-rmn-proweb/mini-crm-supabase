@@ -10,7 +10,15 @@ const envSchema = z.object({
   VITE_SUPABASE_ANON_KEY: z.string().min(1, 'VITE_SUPABASE_ANON_KEY is required'),
 })
 
-const parsed = envSchema.safeParse(import.meta.env)
+// Trim first: a stray newline/space (e.g. pasted into a hosting env var) would otherwise
+// slip into the anon key and make an invalid `apikey`/`Authorization` header — fetch then
+// throws "Failed to execute 'fetch': Invalid value" before the request is even sent.
+const rawEnv = {
+  VITE_SUPABASE_URL: import.meta.env.VITE_SUPABASE_URL?.trim(),
+  VITE_SUPABASE_ANON_KEY: import.meta.env.VITE_SUPABASE_ANON_KEY?.trim(),
+}
+
+const parsed = envSchema.safeParse(rawEnv)
 
 if (!parsed.success) {
   const issues = parsed.error.issues.map((i) => `  - ${i.path.join('.')}: ${i.message}`).join('\n')

@@ -30,7 +30,7 @@ export function SidebarNav({ collapsed = false, onNavigate }: Props) {
               }}
             >
               <Icon className="size-4 shrink-0" />
-              {!collapsed && <span>{label}</span>}
+              {!collapsed && <span className="whitespace-nowrap">{label}</span>}
             </Link>
           )
 

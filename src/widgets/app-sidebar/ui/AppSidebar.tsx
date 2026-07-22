@@ -12,7 +12,7 @@ export function AppSidebar() {
   return (
     <aside
       className={cn(
-        'hidden shrink-0 flex-col border-r bg-sidebar transition-[width] duration-200 md:flex',
+        'hidden shrink-0 flex-col overflow-hidden border-r bg-sidebar transition-[width] duration-200 md:flex',
         collapsed ? 'w-16' : 'w-56',
       )}
     >
@@ -22,7 +22,9 @@ export function AppSidebar() {
           collapsed ? 'justify-center' : 'justify-between',
         )}
       >
-        {!collapsed && <span className="font-heading text-lg font-semibold">Mini-CRM</span>}
+        {!collapsed && (
+          <span className="font-heading text-lg font-semibold whitespace-nowrap">Mini-CRM</span>
+        )}
         <Button
           variant="ghost"
           size="icon-sm"

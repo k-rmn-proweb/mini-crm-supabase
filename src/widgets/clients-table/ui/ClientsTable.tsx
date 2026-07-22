@@ -28,7 +28,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/shared/ui'
-import { useDebouncedValue } from '@/shared/lib'
+import { useDebouncedValue } from '@/shared/hooks'
 import { cn, formatDate } from '@/shared/utils'
 import {
   CLIENT_STATUS_OPTIONS,

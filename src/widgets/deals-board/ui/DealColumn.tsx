@@ -7,10 +7,11 @@ type Props = {
   stage: DealStage
   deals: Deal[]
   clientNameById: (id: string) => string | undefined
+  highlightedId: string | null
   onCardClick: (deal: Deal) => void
 }
 
-export function DealColumn({ stage, deals, clientNameById, onCardClick }: Props) {
+export function DealColumn({ stage, deals, clientNameById, highlightedId, onCardClick }: Props) {
   const { setNodeRef, isOver } = useDroppable({ id: stage })
   const sum = deals.reduce((acc, deal) => acc + deal.amount, 0)
 
@@ -34,6 +35,7 @@ export function DealColumn({ stage, deals, clientNameById, onCardClick }: Props)
             key={deal.id}
             deal={deal}
             clientName={clientNameById(deal.client_id)}
+            highlighted={deal.id === highlightedId}
             onClick={() => onCardClick(deal)}
           />
         ))}

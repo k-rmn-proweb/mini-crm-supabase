@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import {
   DndContext,
   DragOverlay,
@@ -26,6 +26,15 @@ export function DealsBoard() {
 
   const [dialog, setDialog] = useState<DialogState>({ open: false })
   const [activeDeal, setActiveDeal] = useState<Deal | null>(null)
+  const [highlightedId, setHighlightedId] = useState<string | null>(null)
+
+  const highlightTimer = useRef<ReturnType<typeof setTimeout>>(undefined)
+  const highlight = (id: string) => {
+    setHighlightedId(id)
+    clearTimeout(highlightTimer.current)
+    highlightTimer.current = setTimeout(() => setHighlightedId(null), 1200)
+  }
+  useEffect(() => () => clearTimeout(highlightTimer.current), [])
 
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 8 } }))
 
@@ -64,6 +73,7 @@ export function DealsBoard() {
       return
     }
     updateStage.mutate({ id: deal.id, stage: overId as DealStage })
+    highlight(deal.id)
   }
 
   return (
@@ -89,6 +99,7 @@ export function DealsBoard() {
               stage={stage}
               deals={dealsByStage[stage]}
               clientNameById={clientNameById}
+              highlightedId={highlightedId}
               onCardClick={(deal) => setDialog({ open: true, deal })}
             />
           ))}
@@ -104,6 +115,7 @@ export function DealsBoard() {
       <DealFormDialog
         open={dialog.open}
         deal={dialog.deal}
+        onSaved={(deal) => highlight(deal.id)}
         onOpenChange={(open) => setDialog((prev) => ({ ...prev, open }))}
       />
     </div>

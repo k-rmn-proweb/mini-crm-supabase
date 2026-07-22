@@ -30,6 +30,8 @@ type Props = {
   onOpenChange: (open: boolean) => void
   deal?: Deal
   defaultStage?: DealStage
+  /** Вызывается с созданной/обновлённой сделкой (для подсветки на доске). */
+  onSaved?: (deal: Deal) => void
 }
 
 function toFormValues(deal?: Deal, defaultStage?: DealStage): DealFormValues {
@@ -52,7 +54,7 @@ function toDto(values: DealFormValues): CreateDealDto {
   }
 }
 
-export function DealFormDialog({ open, onOpenChange, deal, defaultStage }: Props) {
+export function DealFormDialog({ open, onOpenChange, deal, defaultStage, onSaved }: Props) {
   const isEdit = Boolean(deal)
   const { data: clients } = useClientOptions()
   const createMutation = useCreateDeal()
@@ -73,11 +75,14 @@ export function DealFormDialog({ open, onOpenChange, deal, defaultStage }: Props
 
   const submit = handleSubmit((formValues) => {
     const dto = toDto(formValues)
-    const close = () => onOpenChange(false)
+    const onSuccess = (saved: Deal) => {
+      onOpenChange(false)
+      onSaved?.(saved)
+    }
     if (deal) {
-      updateMutation.mutate({ id: deal.id, dto }, { onSuccess: close })
+      updateMutation.mutate({ id: deal.id, dto }, { onSuccess })
     } else {
-      createMutation.mutate(dto, { onSuccess: close })
+      createMutation.mutate(dto, { onSuccess })
     }
   })
 

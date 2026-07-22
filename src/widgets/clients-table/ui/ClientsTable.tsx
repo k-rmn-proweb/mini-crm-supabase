@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from '@tanstack/react-router'
 import {
   ChevronLeft,
   ChevronRight,
@@ -45,6 +46,7 @@ const PAGE_SIZE = 10
 type DialogState = { open: boolean; client?: Client }
 
 export function ClientsTable() {
+  const navigate = useNavigate()
   const { search, status, page, setSearch, setStatus, setPage } = useClientsFilters()
   const debouncedSearch = useDebouncedValue(search, 300)
 
@@ -159,7 +161,11 @@ export function ClientsTable() {
               </TableHeader>
               <TableBody>
                 {rows.map((client) => (
-                  <TableRow key={client.id}>
+                  <TableRow
+                    key={client.id}
+                    className="cursor-pointer"
+                    onClick={() => navigate({ to: '/clients/$id', params: { id: client.id } })}
+                  >
                     <TableCell className="font-medium">{client.name}</TableCell>
                     <TableCell className="text-muted-foreground">{client.company ?? '—'}</TableCell>
                     <TableCell className="text-muted-foreground">{client.email ?? '—'}</TableCell>
@@ -175,7 +181,10 @@ export function ClientsTable() {
                           variant="ghost"
                           size="icon-sm"
                           aria-label="Редактировать"
-                          onClick={() => setForm({ open: true, client })}
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            setForm({ open: true, client })
+                          }}
                         >
                           <Pencil />
                         </Button>
@@ -183,7 +192,10 @@ export function ClientsTable() {
                           variant="ghost"
                           size="icon-sm"
                           aria-label="Удалить"
-                          onClick={() => setToDelete({ open: true, client })}
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            setToDelete({ open: true, client })
+                          }}
                         >
                           <Trash2 />
                         </Button>

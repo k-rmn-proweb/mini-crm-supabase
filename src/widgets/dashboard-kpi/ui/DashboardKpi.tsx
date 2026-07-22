@@ -1,10 +1,10 @@
 import { CircleDollarSign, Trophy, UserCheck, Users, type LucideIcon } from 'lucide-react'
 import { Card, CardContent, ErrorState, Skeleton } from '@/shared/ui'
-import { formatCurrency } from '@/shared/utils'
+import { cn, formatCurrency } from '@/shared/utils'
 import { useClientStats } from '@/entities/client'
 import { useDealsQuery } from '@/entities/deal'
 
-type Kpi = { label: string; value: string | number; icon: LucideIcon }
+type Kpi = { label: string; value: string | number; icon: LucideIcon; color: string }
 
 export function DashboardKpi() {
   const clients = useClientStats()
@@ -34,26 +34,44 @@ export function DashboardKpi() {
     .reduce((sum, deal) => sum + deal.amount, 0)
 
   const items: Kpi[] = [
-    { label: 'Всего клиентов', value: clientList.length, icon: Users },
+    {
+      label: 'Всего клиентов',
+      value: clientList.length,
+      icon: Users,
+      color: 'bg-primary/10 text-primary',
+    },
     {
       label: 'Активных клиентов',
       value: clientList.filter((client) => client.status === 'active').length,
       icon: UserCheck,
+      color: 'bg-blue-500/10 text-blue-600 dark:text-blue-400',
     },
-    { label: 'Открытые сделки', value: formatCurrency(openSum), icon: CircleDollarSign },
-    { label: 'Выигранные сделки', value: formatCurrency(wonSum), icon: Trophy },
+    {
+      label: 'Открытые сделки',
+      value: formatCurrency(openSum),
+      icon: CircleDollarSign,
+      color: 'bg-amber-500/10 text-amber-600 dark:text-amber-400',
+    },
+    {
+      label: 'Выигранные сделки',
+      value: formatCurrency(wonSum),
+      icon: Trophy,
+      color: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400',
+    },
   ]
 
   return (
     <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-      {items.map(({ label, value, icon: Icon }) => (
+      {items.map(({ label, value, icon: Icon, color }) => (
         <Card key={label}>
           <CardContent className="flex items-center justify-between gap-3">
             <div className="space-y-1">
               <p className="text-sm text-muted-foreground">{label}</p>
               <p className="font-heading text-2xl font-semibold">{value}</p>
             </div>
-            <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground">
+            <div
+              className={cn('flex size-9 shrink-0 items-center justify-center rounded-lg', color)}
+            >
               <Icon className="size-5" />
             </div>
           </CardContent>

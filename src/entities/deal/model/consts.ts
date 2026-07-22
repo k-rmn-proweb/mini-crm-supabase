@@ -14,3 +14,11 @@ export const DEAL_STAGE_OPTIONS = DEAL_STAGES.map((value) => ({
   value,
   label: DEAL_STAGE_LABELS[value],
 }))
+
+/** Сплошные цвета этапов (акценты карточек/колонок, графики). */
+export const DEAL_STAGE_COLORS: Record<DealStage, string> = {
+  new: '#3b82f6',
+  negotiation: '#f59e0b',
+  won: '#10b981',
+  lost: '#ef4444',
+}

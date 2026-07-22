@@ -1,6 +1,6 @@
 import { useDroppable } from '@dnd-kit/core'
 import { cn, formatCurrency } from '@/shared/utils'
-import { DEAL_STAGE_LABELS, type Deal, type DealStage } from '@/entities/deal'
+import { DEAL_STAGE_COLORS, DEAL_STAGE_LABELS, type Deal, type DealStage } from '@/entities/deal'
 import { DraggableDealCard } from './DraggableDealCard'
 
 type Props = {
@@ -23,11 +23,18 @@ export function DealColumn({ stage, deals, clientNameById, highlightedId, onCard
         isOver && 'bg-muted ring-2 ring-ring/40 ring-inset',
       )}
     >
-      <div className="flex items-center justify-between px-1 py-1.5">
-        <span className="text-sm font-medium">{DEAL_STAGE_LABELS[stage]}</span>
-        <span className="text-xs text-muted-foreground">
-          {deals.length} · {formatCurrency(sum)}
-        </span>
+      <div className="mb-2 flex items-center justify-between gap-2 px-1">
+        <div className="flex items-center gap-2">
+          <span
+            className="size-2 rounded-full"
+            style={{ backgroundColor: DEAL_STAGE_COLORS[stage] }}
+          />
+          <span className="text-sm font-medium">{DEAL_STAGE_LABELS[stage]}</span>
+          <span className="rounded-full bg-muted px-1.5 py-0.5 text-xs font-medium text-muted-foreground">
+            {deals.length}
+          </span>
+        </div>
+        <span className="text-xs font-medium text-muted-foreground">{formatCurrency(sum)}</span>
       </div>
       <div className="flex min-h-24 flex-1 flex-col gap-2">
         {deals.map((deal) => (

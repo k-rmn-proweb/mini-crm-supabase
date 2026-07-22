@@ -3,7 +3,12 @@ export { useDealsQuery } from './model/useDealsQuery'
 export { useClientDealsQuery } from './model/useClientDealsQuery'
 export { DealCard } from './ui/DealCard'
 export { DealStageBadge } from './ui/DealStageBadge'
-export { DEAL_STAGE_LABELS, DEAL_STAGE_OPTIONS, DEAL_STAGES } from './model/consts'
+export {
+  DEAL_STAGE_LABELS,
+  DEAL_STAGE_OPTIONS,
+  DEAL_STAGES,
+  DEAL_STAGE_COLORS,
+} from './model/consts'
 export { dealKeys } from './api/keys'
 export {
   fetchDeals,

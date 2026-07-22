@@ -16,19 +16,12 @@ import {
 } from 'recharts'
 import { Card, CardContent, CardHeader, CardTitle, ErrorState, Skeleton } from '@/shared/ui'
 import { CLIENT_STATUS_LABELS, useClientStats, type ClientStatus } from '@/entities/client'
-import { DEAL_STAGES, DEAL_STAGE_LABELS, useDealsQuery, type DealStage } from '@/entities/deal'
+import { DEAL_STAGES, DEAL_STAGE_COLORS, DEAL_STAGE_LABELS, useDealsQuery } from '@/entities/deal'
 
 const STATUS_COLORS: Record<ClientStatus, string> = {
   lead: '#3b82f6',
   active: '#10b981',
   inactive: '#94a3b8',
-}
-
-const STAGE_COLORS: Record<DealStage, string> = {
-  new: '#3b82f6',
-  negotiation: '#f59e0b',
-  won: '#10b981',
-  lost: '#ef4444',
 }
 
 const tooltipStyle = {
@@ -113,7 +106,7 @@ export function DashboardCharts() {
   const stageData = DEAL_STAGES.map((stage) => ({
     name: DEAL_STAGE_LABELS[stage],
     count: dealList.filter((deal) => deal.stage === stage).length,
-    fill: STAGE_COLORS[stage],
+    fill: DEAL_STAGE_COLORS[stage],
   }))
 
   const monthData = newClientsByMonth(clientList)

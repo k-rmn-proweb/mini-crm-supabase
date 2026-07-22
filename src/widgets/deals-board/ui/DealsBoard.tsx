@@ -79,10 +79,10 @@ export function DealsBoard() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h1 className="font-heading text-2xl font-semibold">Сделки</h1>
+        <h1 className="font-heading text-2xl font-semibold">Deals</h1>
         <Button onClick={() => setDrawer({ open: true })}>
           <Plus />
-          Добавить сделку
+          Add deal
         </Button>
       </div>
 

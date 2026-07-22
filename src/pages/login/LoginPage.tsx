@@ -8,8 +8,8 @@ export function LoginPage() {
   return (
     <Card className="w-full max-w-sm">
       <CardHeader>
-        <CardTitle>Вход</CardTitle>
-        <CardDescription>Войдите в свой Mini-CRM</CardDescription>
+        <CardTitle>Sign in</CardTitle>
+        <CardDescription>Sign in to your Mini-CRM</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <LoginForm
@@ -18,9 +18,9 @@ export function LoginPage() {
           }}
         />
         <p className="text-center text-sm text-muted-foreground">
-          Нет аккаунта?{' '}
+          No account?{' '}
           <Link to="/register" className="text-foreground underline underline-offset-4">
-            Зарегистрироваться
+            Sign up
           </Link>
         </p>
       </CardContent>

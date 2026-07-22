@@ -3,7 +3,7 @@ import { supabase } from '@/shared/api'
 import { queryClient } from '@/shared/lib'
 import { dealKeys } from '../api/keys'
 
-/** Подписка на изменения сделок (Realtime) → инвалидация ключей → авто-рефетч. */
+/** Subscribe to deal changes (Realtime) → invalidate keys → auto-refetch. */
 export function useDealsRealtime(userId?: string) {
   useEffect(() => {
     if (!userId) {

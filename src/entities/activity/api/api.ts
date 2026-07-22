@@ -2,7 +2,7 @@ import { supabase } from '@/shared/api'
 import type { Activity } from '../model/types'
 import type { CreateActivityDto } from './dto'
 
-/** Активности клиента, новые сверху. */
+/** Client activities, newest first. */
 export async function fetchActivitiesByClient(clientId: string): Promise<Activity[]> {
   const { data, error } = await supabase
     .from('activities')
@@ -15,7 +15,7 @@ export async function fetchActivitiesByClient(clientId: string): Promise<Activit
   return data
 }
 
-/** Последние активности по всем клиентам (лента дашборда). */
+/** Recent activities across all clients (dashboard feed). */
 export async function fetchRecentActivities(limit = 8): Promise<Activity[]> {
   const { data, error } = await supabase
     .from('activities')
@@ -28,12 +28,12 @@ export async function fetchRecentActivities(limit = 8): Promise<Activity[]> {
   return data
 }
 
-/** Создать активность. user_id проставляется из текущей сессии. */
+/** Create an activity. user_id is set from the current session. */
 export async function createActivity(dto: CreateActivityDto): Promise<Activity> {
   const { data: sessionData } = await supabase.auth.getSession()
   const userId = sessionData.session?.user.id
   if (!userId) {
-    throw new Error('Нет активной сессии')
+    throw new Error('No active session')
   }
 
   const { data, error } = await supabase

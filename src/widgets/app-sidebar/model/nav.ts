@@ -8,7 +8,7 @@ export type NavItem = {
 }
 
 export const NAV_ITEMS: NavItem[] = [
-  { to: '/', label: 'Дашборд', icon: LayoutDashboard, exact: true },
-  { to: '/clients', label: 'Клиенты', icon: Users, exact: false },
-  { to: '/deals', label: 'Сделки', icon: Briefcase, exact: false },
+  { to: '/', label: 'Dashboard', icon: LayoutDashboard, exact: true },
+  { to: '/clients', label: 'Clients', icon: Users, exact: false },
+  { to: '/deals', label: 'Deals', icon: Briefcase, exact: false },
 ]

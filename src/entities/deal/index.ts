@@ -1,4 +1,4 @@
-// Публичный API сущности deal.
+// Public API of the deal entity.
 export { useDealsQuery } from './model/useDealsQuery'
 export { useClientDealsQuery } from './model/useClientDealsQuery'
 export { useDealsRealtime } from './model/useDealsRealtime'

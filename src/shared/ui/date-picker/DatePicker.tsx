@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import { CalendarIcon } from 'lucide-react'
-import { ru } from 'react-day-picker/locale'
+import { enUS } from 'react-day-picker/locale'
 import { cn } from '@/shared/utils'
 import { Button } from '../button'
 import { Calendar } from '../calendar'
 import { Popover, PopoverContent, PopoverTrigger } from '../popover'
 
 type Props = {
-  /** Дата в формате 'YYYY-MM-DD' или ''. */
+  /** Date in 'YYYY-MM-DD' format or ''. */
   value?: string
   onChange: (value: string) => void
   id?: string
@@ -29,7 +29,7 @@ function toISODate(date: Date): string {
   return `${year}-${month}-${day}`
 }
 
-export function DatePicker({ value, onChange, id, placeholder = 'Выберите дату' }: Props) {
+export function DatePicker({ value, onChange, id, placeholder = 'Select a date' }: Props) {
   const [open, setOpen] = useState(false)
   const selected = parseDate(value)
 
@@ -44,7 +44,7 @@ export function DatePicker({ value, onChange, id, placeholder = 'Выберит�
         >
           <CalendarIcon />
           {selected
-            ? selected.toLocaleDateString('ru-RU', {
+            ? selected.toLocaleDateString('en-US', {
                 day: '2-digit',
                 month: 'short',
                 year: 'numeric',
@@ -60,7 +60,7 @@ export function DatePicker({ value, onChange, id, placeholder = 'Выберит�
             onChange(date ? toISODate(date) : '')
             setOpen(false)
           }}
-          locale={ru}
+          locale={enUS}
           autoFocus
         />
       </PopoverContent>

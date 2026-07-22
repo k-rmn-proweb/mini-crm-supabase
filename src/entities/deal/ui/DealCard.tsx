@@ -5,11 +5,11 @@ import type { Deal } from '../model/types'
 type Props = {
   deal: Deal
   clientName?: string
-  /** Кратковременная подсветка (после перемещения/создания). */
+  /** Brief highlight (after moving/creating). */
   highlighted?: boolean
 }
 
-/** Презентационная карточка сделки (draggable-обёртку добавляет доска). */
+/** Presentational deal card (the board adds the draggable wrapper). */
 export function DealCard({ deal, clientName, highlighted }: Props) {
   return (
     <div

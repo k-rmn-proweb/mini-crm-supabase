@@ -9,7 +9,7 @@ import { DEMO_CREDENTIALS } from '../lib/consts'
 function toFriendly(error: unknown): string {
   const message = getErrorMessage(error)
   if (message.includes('Invalid login credentials')) {
-    return 'Неверный email или пароль'
+    return 'Invalid email or password'
   }
   return message
 }
@@ -54,7 +54,7 @@ export function LoginForm({ onSuccess }: { onSuccess?: () => void }) {
       </div>
 
       <div className="space-y-1.5">
-        <Label htmlFor="password">Пароль</Label>
+        <Label htmlFor="password">Password</Label>
         <Input
           id="password"
           type="password"
@@ -66,7 +66,7 @@ export function LoginForm({ onSuccess }: { onSuccess?: () => void }) {
       </div>
 
       <Button type="submit" className="w-full" disabled={login.isPending}>
-        {login.isPending ? 'Вход…' : 'Войти'}
+        {login.isPending ? 'Signing in…' : 'Sign in'}
       </Button>
       <Button
         type="button"
@@ -75,7 +75,7 @@ export function LoginForm({ onSuccess }: { onSuccess?: () => void }) {
         onClick={loginAsDemo}
         disabled={login.isPending}
       >
-        Войти как демо
+        Log in as demo
       </Button>
     </form>
   )

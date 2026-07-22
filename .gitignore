@@ -3,7 +3,7 @@ node_modules/
 .pnp
 .pnp.js
 
-# Supabase CLI (локальное состояние)
+# Supabase CLI (local state)
 supabase/.temp/
 supabase/.branches/
 
@@ -12,7 +12,7 @@ dist/
 dist-ssr/
 build/
 
-# Local env files (секреты Supabase — НИКОГДА в git)
+# Local env files (Supabase secrets — NEVER in git)
 .env
 .env.local
 .env.*.local
@@ -36,10 +36,10 @@ pnpm-debug.log*
 *.sln
 *.sw?
 
-# TanStack Router сгенерированное дерево (по желанию можно коммитить)
+# TanStack Router generated tree (optional to commit)
 # src/routeTree.gen.ts
 
-# TanStack Router временный кеш плагина
+# TanStack Router temporary plugin cache
 .tanstack/
 
 # Vite / TS cache

@@ -9,7 +9,7 @@ export function useCreateActivity(clientId: string) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: activityKeys.byClient(clientId) })
       queryClient.invalidateQueries({ queryKey: activityKeys.recent() })
-      toast.success('Активность добавлена')
+      toast.success('Activity added')
     },
   })
 }

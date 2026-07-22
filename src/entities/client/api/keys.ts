@@ -1,6 +1,6 @@
 import type { ClientsQueryParams } from './dto'
 
-/** Query-ключи сущности client (единственное определение). */
+/** Query keys of the client entity (single source of truth). */
 export const clientKeys = {
   all: ['clients'] as const,
   lists: () => [...clientKeys.all, 'list'] as const,

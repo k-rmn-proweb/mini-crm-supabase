@@ -17,7 +17,7 @@ export function ClientDeals({ clientId }: { clientId: string }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Сделки</CardTitle>
+        <CardTitle>Deals</CardTitle>
       </CardHeader>
       <CardContent>
         {isLoading ? (
@@ -31,8 +31,8 @@ export function ClientDeals({ clientId }: { clientId: string }) {
         ) : !deals || deals.length === 0 ? (
           <EmptyState
             icon={Briefcase}
-            title="Нет сделок"
-            description="У этого клиента пока нет сделок."
+            title="No deals"
+            description="This client has no deals yet."
           />
         ) : (
           <ul className="divide-y">

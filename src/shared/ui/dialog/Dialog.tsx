@@ -38,8 +38,8 @@ function DialogOverlay({
 }
 
 /**
- * Дефолт при открытии: фокус на первом поле, курсор в конец — без выделения текста
- * (Radix авто-фокусирует первый инпут, а браузер выделяет его содержимое).
+ * Default on open: focus the first field, cursor at the end — without selecting the text
+ * (Radix auto-focuses the first input, and the browser selects its contents).
  */
 function focusFirstFieldToEnd(event: Event) {
   const content = event.currentTarget
@@ -56,7 +56,7 @@ function focusFirstFieldToEnd(event: Event) {
     const end = field.value.length
     field.setSelectionRange(end, end)
   } catch {
-    // input type без поддержки selection (number/date/email) — оставляем просто фокус
+    // input type without selection support (number/date/email) — just keep the focus
   }
 }
 

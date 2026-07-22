@@ -3,7 +3,7 @@ export {}
 declare module '@tanstack/react-query' {
   interface Register {
     mutationMeta: {
-      /** Не показывать глобальный error-toast (форма показывает ошибку инлайн). */
+      /** Do not show the global error toast (the form shows the error inline). */
       skipErrorToast?: boolean
     }
   }

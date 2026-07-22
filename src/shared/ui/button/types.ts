@@ -4,6 +4,6 @@ import type { buttonVariants } from './variants'
 
 export type ButtonProps = ComponentProps<'button'> &
   VariantProps<typeof buttonVariants> & {
-    /** Рендерить как дочерний элемент (Radix Slot) вместо <button>. */
+    /** Render as a child element (Radix Slot) instead of <button>. */
     asChild?: boolean
   }

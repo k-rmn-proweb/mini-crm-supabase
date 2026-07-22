@@ -1,13 +1,13 @@
 import type { DealStage } from './types'
 
 export const DEAL_STAGE_LABELS: Record<DealStage, string> = {
-  new: 'Новая',
-  negotiation: 'Переговоры',
-  won: 'Выиграна',
-  lost: 'Проиграна',
+  new: 'New',
+  negotiation: 'Negotiation',
+  won: 'Won',
+  lost: 'Lost',
 }
 
-/** Порядок этапов (колонки Kanban в Фазе 5). */
+/** Stage order (Kanban columns in Phase 5). */
 export const DEAL_STAGES: DealStage[] = ['new', 'negotiation', 'won', 'lost']
 
 export const DEAL_STAGE_OPTIONS = DEAL_STAGES.map((value) => ({
@@ -15,7 +15,7 @@ export const DEAL_STAGE_OPTIONS = DEAL_STAGES.map((value) => ({
   label: DEAL_STAGE_LABELS[value],
 }))
 
-/** Сплошные цвета этапов (акценты карточек/колонок, графики). */
+/** Solid stage colors (card/column accents, charts). */
 export const DEAL_STAGE_COLORS: Record<DealStage, string> = {
   new: '#3b82f6',
   negotiation: '#f59e0b',

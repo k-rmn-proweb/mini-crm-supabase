@@ -1,14 +1,14 @@
 -- 0001_init_schema.sql
--- Mini-CRM: доменные типы, таблицы, индексы, updated_at-триггер.
--- Все пользовательские таблицы — в схеме public, у каждой user_id → auth.users (основа RLS).
--- gen_random_uuid() доступен в Supabase из коробки.
+-- Mini-CRM: domain types, tables, indexes, updated_at trigger.
+-- All user tables live in the public schema; each has user_id → auth.users (the basis of RLS).
+-- gen_random_uuid() is available in Supabase out of the box.
 
--- === Доменные enum-типы (дают строгие union-типы в сгенерированных TS-типах) ===
+-- === Domain enum types (produce strict union types in the generated TS types) ===
 create type public.client_status as enum ('lead', 'active', 'inactive');
 create type public.deal_stage as enum ('new', 'negotiation', 'won', 'lost');
 create type public.activity_type as enum ('call', 'email', 'meeting', 'note');
 
--- === Общая функция: автопроставление updated_at при UPDATE ===
+-- === Shared function: auto-set updated_at on UPDATE ===
 create or replace function public.set_updated_at()
 returns trigger
 language plpgsql
@@ -20,7 +20,7 @@ begin
 end;
 $$;
 
--- === profiles (расширение auth.users) ===
+-- === profiles (extension of auth.users) ===
 create table public.profiles (
   id         uuid primary key references auth.users (id) on delete cascade,
   full_name  text not null default '',

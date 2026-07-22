@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useUiStore } from '@/shared/store'
 
-/** Синхронизирует тему из ui-store с классом `.dark` на <html>. */
+/** Syncs the theme from ui-store with the `.dark` class on <html>. */
 export function useApplyTheme() {
   const theme = useUiStore((state) => state.theme)
 

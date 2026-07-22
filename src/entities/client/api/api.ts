@@ -3,8 +3,8 @@ import type { Client } from '../model/types'
 import type { ClientsPage, ClientsQueryParams, CreateClientDto, UpdateClientDto } from './dto'
 
 /**
- * Серверный список клиентов: поиск (ilike по имени/компании), фильтр по статусу,
- * пагинация (range) и общее число (count). RLS отдаёт только свои записи.
+ * Server-side client list: search (ilike on name/company), status filter,
+ * pagination (range) and total count. RLS returns only the user's own records.
  */
 export async function fetchClients(params: ClientsQueryParams): Promise<ClientsPage> {
   const { search, status, page, pageSize } = params
@@ -33,7 +33,7 @@ export async function fetchClients(params: ClientsQueryParams): Promise<ClientsP
   return { rows: data, total: count ?? 0 }
 }
 
-/** Все клиенты пользователя как опции (id + name) — для выпадающих списков. */
+/** All user clients as options (id + name) — for dropdowns. */
 export async function fetchClientOptions(): Promise<Pick<Client, 'id' | 'name'>[]> {
   const { data, error } = await supabase.from('clients').select('id, name').order('name')
   if (error) {
@@ -42,7 +42,7 @@ export async function fetchClientOptions(): Promise<Pick<Client, 'id' | 'name'>[
   return data
 }
 
-/** Клиенты для агрегатов дашборда (только status + created_at). */
+/** Clients for dashboard aggregates (only status + created_at). */
 export async function fetchClientStats(): Promise<Pick<Client, 'id' | 'status' | 'created_at'>[]> {
   const { data, error } = await supabase.from('clients').select('id, status, created_at')
   if (error) {
@@ -51,7 +51,7 @@ export async function fetchClientStats(): Promise<Pick<Client, 'id' | 'status' |
   return data
 }
 
-/** Один клиент по id. */
+/** A single client by id. */
 export async function fetchClientById(id: string): Promise<Client> {
   const { data, error } = await supabase.from('clients').select('*').eq('id', id).single()
   if (error) {
@@ -60,12 +60,12 @@ export async function fetchClientById(id: string): Promise<Client> {
   return data
 }
 
-/** Создать клиента. user_id проставляется из текущей сессии (совпадает с RLS-политикой). */
+/** Create a client. user_id is set from the current session (matches the RLS policy). */
 export async function createClient(dto: CreateClientDto): Promise<Client> {
   const { data: sessionData } = await supabase.auth.getSession()
   const userId = sessionData.session?.user.id
   if (!userId) {
-    throw new Error('Нет активной сессии')
+    throw new Error('No active session')
   }
 
   const { data, error } = await supabase
@@ -79,7 +79,7 @@ export async function createClient(dto: CreateClientDto): Promise<Client> {
   return data
 }
 
-/** Обновить клиента. */
+/** Update a client. */
 export async function updateClient(id: string, dto: UpdateClientDto): Promise<Client> {
   const { data, error } = await supabase.from('clients').update(dto).eq('id', id).select().single()
   if (error) {
@@ -88,7 +88,7 @@ export async function updateClient(id: string, dto: UpdateClientDto): Promise<Cl
   return data
 }
 
-/** Удалить клиента (каскадно снесёт его сделки и активности). */
+/** Delete a client (cascades to their deals and activities). */
 export async function deleteClient(id: string): Promise<void> {
   const { error } = await supabase.from('clients').delete().eq('id', id)
   if (error) {

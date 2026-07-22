@@ -1,4 +1,4 @@
-/** Query-ключи сущности deal. */
+/** Query keys of the deal entity. */
 export const dealKeys = {
   all: ['deals'] as const,
   lists: () => [...dealKeys.all, 'list'] as const,

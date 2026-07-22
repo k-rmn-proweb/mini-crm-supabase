@@ -4,7 +4,7 @@ import { cn } from '@/shared/utils'
 import { Button } from '@/shared/ui'
 import { SidebarNav } from './SidebarNav'
 
-/** Десктопный сайдбар: сворачивается до иконок. Скрыт на мобиле (< md). */
+/** Desktop sidebar: collapses to icons. Hidden on mobile (< md). */
 export function AppSidebar() {
   const collapsed = useUiStore((s) => s.sidebarCollapsed)
   const toggle = useUiStore((s) => s.toggleSidebarCollapsed)
@@ -29,7 +29,7 @@ export function AppSidebar() {
           variant="ghost"
           size="icon-sm"
           onClick={toggle}
-          aria-label={collapsed ? 'Развернуть сайдбар' : 'Свернуть сайдбар'}
+          aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
         >
           {collapsed ? <PanelLeftOpen /> : <PanelLeftClose />}
         </Button>

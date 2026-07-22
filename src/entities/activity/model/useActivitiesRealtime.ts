@@ -3,7 +3,7 @@ import { supabase } from '@/shared/api'
 import { queryClient } from '@/shared/lib'
 import { activityKeys } from '../api/keys'
 
-/** Подписка на изменения активностей (Realtime) → инвалидация ключей → авто-рефетч. */
+/** Subscribe to activity changes (Realtime) → invalidate keys → auto-refetch. */
 export function useActivitiesRealtime(userId?: string) {
   useEffect(() => {
     if (!userId) {

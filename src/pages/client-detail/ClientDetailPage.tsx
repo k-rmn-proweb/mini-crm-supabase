@@ -14,7 +14,7 @@ function BackLink() {
       className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
     >
       <ArrowLeft className="size-4" />
-      Клиенты
+      Clients
     </Link>
   )
 }
@@ -41,8 +41,8 @@ export function ClientDetailPage({ id }: { id: string }) {
       <div className="space-y-4">
         <BackLink />
         <ErrorState
-          title="Клиент не найден"
-          description="Возможно, он был удалён."
+          title="Client not found"
+          description="It may have been deleted."
           onRetry={() => refetch()}
         />
       </div>
@@ -83,7 +83,7 @@ export function ClientDetailPage({ id }: { id: string }) {
           </div>
           <Button variant="outline" size="sm" onClick={() => setEditOpen(true)}>
             <Pencil />
-            Редактировать
+            Edit
           </Button>
         </CardContent>
       </Card>

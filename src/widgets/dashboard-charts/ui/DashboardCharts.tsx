@@ -40,7 +40,7 @@ function newClientsByMonth(clients: { created_at: string }[], monthsBack = 6) {
     const d = new Date(base.getFullYear(), base.getMonth() - (monthsBack - 1 - i), 1)
     return {
       key: `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`,
-      label: d.toLocaleDateString('ru-RU', { month: 'short' }),
+      label: d.toLocaleDateString('en-US', { month: 'short' }),
       count: 0,
     }
   })
@@ -113,16 +113,16 @@ export function DashboardCharts() {
 
   return (
     <div className="grid gap-4 lg:grid-cols-2">
-      <ChartCard title="Сделки по этапам">
+      <ChartCard title="Deals by stage">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={stageData}>
             <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
             <XAxis dataKey="name" tick={axisTick} tickLine={false} axisLine={false} />
             <YAxis allowDecimals={false} tick={axisTick} tickLine={false} axisLine={false} />
             <Tooltip contentStyle={tooltipStyle} cursor={{ fill: 'var(--muted)', opacity: 0.4 }} />
-            <Bar dataKey="count" name="Сделок" radius={[6, 6, 0, 0]}>
+            <Bar dataKey="count" name="Deals" radius={[6, 6, 0, 0]}>
               {stageData.map((entry) => (
-                // Cell — стандартный способ per-цвета; deprecated только к Recharts 4
+                // Cell is the standard way to color per-entry; only deprecated in Recharts 4
                 // eslint-disable-next-line @typescript-eslint/no-deprecated
                 <Cell key={entry.name} fill={entry.fill} />
               ))}
@@ -131,7 +131,7 @@ export function DashboardCharts() {
         </ResponsiveContainer>
       </ChartCard>
 
-      <ChartCard title="Клиенты по статусам">
+      <ChartCard title="Clients by status">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Pie
@@ -147,7 +147,7 @@ export function DashboardCharts() {
         </ResponsiveContainer>
       </ChartCard>
 
-      <ChartCard title="Новые клиенты по месяцам">
+      <ChartCard title="New clients by month">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={monthData}>
             <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
@@ -157,7 +157,7 @@ export function DashboardCharts() {
             <Line
               type="monotone"
               dataKey="count"
-              name="Новые клиенты"
+              name="New clients"
               stroke="#6366f1"
               strokeWidth={2}
               dot={{ r: 3 }}

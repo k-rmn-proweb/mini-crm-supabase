@@ -5,8 +5,8 @@ import type { AuthState } from './types'
 const AuthContext = createContext<AuthState | null>(null)
 
 /**
- * Держит сессию Supabase: читает начальную сессию и подписывается на изменения
- * (login/logout/refresh). Наверх отдаёт { session, user, isLoading }.
+ * Holds the Supabase session: reads the initial session and subscribes to changes
+ * (login/logout/refresh). Exposes { session, user, isLoading }.
  */
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<AuthState>({
@@ -41,12 +41,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 export function useAuth(): AuthState {
   const ctx = use(AuthContext)
   if (!ctx) {
-    throw new Error('useAuth должен использоваться внутри <AuthProvider>')
+    throw new Error('useAuth must be used within <AuthProvider>')
   }
   return ctx
 }
 
-/** Удобный алиас для чтения сессии/пользователя. */
+/** Convenient alias for reading the session/user. */
 export function useSession(): AuthState {
   return useAuth()
 }

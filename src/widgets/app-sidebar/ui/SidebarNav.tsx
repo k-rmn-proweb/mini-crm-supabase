@@ -4,9 +4,9 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/shar
 import { NAV_ITEMS } from '../model/nav'
 
 type Props = {
-  /** Свёрнутый режим: только иконки + тултипы. */
+  /** Collapsed mode: icons + tooltips only. */
   collapsed?: boolean
-  /** Вызывается при клике по пункту (например, закрыть мобильный drawer). */
+  /** Called when an item is clicked (e.g. to close the mobile drawer). */
   onNavigate?: () => void
 }
 

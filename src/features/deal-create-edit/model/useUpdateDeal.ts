@@ -3,8 +3,8 @@ import { queryClient } from '@/shared/lib'
 import { dealKeys, updateDeal, type UpdateDealDto } from '@/entities/deal'
 
 /**
- * Обновление сделки (авто-сохранение в drawer'е). Success-тоста нет — было бы
- * шумно на каждое изменение (статус показывает сам drawer). Ошибки — глобальным toast.
+ * Update a deal (auto-save in the drawer). No success toast — it would be
+ * noisy on every change (the drawer itself shows status). Errors go to the global toast.
  */
 export function useUpdateDeal() {
   return useMutation({

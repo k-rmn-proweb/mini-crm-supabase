@@ -3,7 +3,7 @@ import { userKeys } from '../api/keys'
 import { fetchProfile } from '../api/api'
 import { useSession } from './auth-context'
 
-/** Профиль текущего пользователя (для шапки/настроек). */
+/** Current user's profile (for the header/settings). */
 export function useProfile() {
   const { user } = useSession()
   const userId = user?.id
@@ -12,7 +12,7 @@ export function useProfile() {
     queryKey: userKeys.profile(userId ?? ''),
     queryFn: () => {
       if (!userId) {
-        throw new Error('Нет активной сессии')
+        throw new Error('No active session')
       }
       return fetchProfile(userId)
     },

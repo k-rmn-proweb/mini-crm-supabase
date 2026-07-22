@@ -17,7 +17,7 @@ export function ClientActivityTimeline({ clientId }: { clientId: string }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Активности</CardTitle>
+        <CardTitle>Activities</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <AddActivityForm clientId={clientId} />
@@ -33,8 +33,8 @@ export function ClientActivityTimeline({ clientId }: { clientId: string }) {
         ) : !activities || activities.length === 0 ? (
           <EmptyState
             icon={MessageSquare}
-            title="Нет активностей"
-            description="Добавьте первую активность выше."
+            title="No activities"
+            description="Add the first activity above."
           />
         ) : (
           <ul className="space-y-4">

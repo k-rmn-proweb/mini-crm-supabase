@@ -4,7 +4,7 @@ import { ErrorFallback } from './ErrorFallback'
 type Props = { children: ReactNode }
 type State = { error: Error | null }
 
-/** Ловит ошибки рендера ниже по дереву и показывает ErrorFallback вместо белого экрана. */
+/** Catches render errors lower in the tree and shows ErrorFallback instead of a blank screen. */
 export class ErrorBoundary extends Component<Props, State> {
   state: State = { error: null }
 

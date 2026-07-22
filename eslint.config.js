@@ -6,16 +6,16 @@ import reactRefresh from 'eslint-plugin-react-refresh'
 import boundaries from 'eslint-plugin-boundaries'
 import prettier from 'eslint-config-prettier'
 
-// Слои FSD сверху вниз. Слой может импортировать только из нижележащих (и из себя).
+// FSD layers top to bottom. A layer may import only from the layers below it (and from itself).
 const FSD_LAYERS = ['app', 'pages', 'widgets', 'features', 'entities', 'shared']
 
-/** Типы слоёв строго ниже переданного. */
+/** Layer types strictly below the given one. */
 function below(layer) {
   return FSD_LAYERS.slice(FSD_LAYERS.indexOf(layer) + 1)
 }
 
 export default tseslint.config(
-  // Игнорируем сборку и сгенерированные файлы
+  // Ignore build output and generated files
   {
     ignores: [
       'dist',
@@ -25,7 +25,7 @@ export default tseslint.config(
     ],
   },
 
-  // Базовые + строгие TS-правила (с проверкой типов) для исходников
+  // Base + strict TS rules (type-checked) for the source files
   {
     files: ['src/**/*.{ts,tsx}'],
     extends: [
@@ -47,14 +47,14 @@ export default tseslint.config(
       boundaries,
     },
     settings: {
-      // Резолвер алиасов @/* — без него boundaries не видит цель импорта
+      // Resolver for @/* aliases — without it boundaries can't see the import target
       'import/resolver': {
         typescript: { project: './tsconfig.json' },
       },
       'boundaries/include': ['src/**/*'],
-      // Слайсовые слои (pages/widgets/features/entities) описаны как `*/**`:
-      // каждый слайс — отдельный элемент. Импорт ВНУТРИ слайса считается внутренним
-      // и не проверяется; импорт между слайсами одного слоя — уже нарушение.
+      // Sliced layers (pages/widgets/features/entities) are described as `*/**`:
+      // each slice is a separate element. An import WITHIN a slice is treated as internal
+      // and is not checked; an import between slices of the same layer is a violation.
       'boundaries/elements': [
         { type: 'app', pattern: 'src/app/**' },
         { type: 'routes', pattern: 'src/routes/**' },
@@ -69,16 +69,16 @@ export default tseslint.config(
       ...reactHooks.configs['recommended-latest'].rules,
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
 
-      // Контроль границ слоёв FSD (eslint-plugin-boundaries v7)
+      // FSD layer-boundary enforcement (eslint-plugin-boundaries v7)
       'boundaries/dependencies': [
         'error',
         {
           default: 'disallow',
-          // Только импорт ВНИЗ по слоям. Правила «свой слой разрешён» НЕТ:
-          // внутрислайсовые импорты внутренние (не проверяются), а между
-          // слайсами одного слоя — запрещены (cross-slice import).
+          // Downward imports only. There is NO "own layer is allowed" rule:
+          // intra-slice imports are internal (not checked), and imports between
+          // slices of the same layer are forbidden (cross-slice import).
           policies: [
-            // app и routes — верх композиции
+            // app and routes — the top of the composition
             {
               from: { element: { type: 'app' } },
               allow: { to: { element: { type: ['routes', ...below('app')] } } },
@@ -103,7 +103,7 @@ export default tseslint.config(
               from: { element: { type: 'entities' } },
               allow: { to: { element: { type: below('entities') } } },
             },
-            // Импорт ВНУТРИ своего слайса разрешён (тот же слой + совпадающий slice)
+            // Imports WITHIN a slice are allowed (same layer + matching slice)
             ...['pages', 'widgets', 'features', 'entities'].map((layer) => ({
               from: { element: { type: layer } },
               allow: {
@@ -119,26 +119,26 @@ export default tseslint.config(
         },
       ],
 
-      // Небольшие послабления строгого пресета под реальный код
+      // Small relaxations of the strict preset to fit the real code
       '@typescript-eslint/consistent-type-definitions': 'off',
       '@typescript-eslint/restrict-template-expressions': [
         'error',
         { allowNumber: true, allowBoolean: true },
       ],
-      // '' (пустая строка) должна проваливаться на fallback → || для строк оставляем
+      // '' (empty string) must fall through to the fallback → keep || for strings
       '@typescript-eslint/prefer-nullish-coalescing': [
         'error',
         { ignorePrimitives: { string: true } },
       ],
-      // () => setState(x) в хендлерах/сеттерах — нормальный React-паттерн
+      // () => setState(x) in handlers/setters is a normal React pattern
       '@typescript-eslint/no-confusing-void-expression': ['error', { ignoreArrowShorthand: true }],
-      // Без принудительного `void` перед промисами и без ошибок на async-хендлерах
+      // No forced `void` before promises and no errors on async handlers
       '@typescript-eslint/no-floating-promises': 'off',
       '@typescript-eslint/no-misused-promises': ['error', { checksVoidReturn: false }],
     },
   },
 
-  // Route-файлы TanStack, обёртки shadcn/ui и context-провайдеры (провайдер + хуки в одном файле)
+  // TanStack route files, shadcn/ui wrappers and context providers (provider + hooks in one file)
   {
     files: ['src/routes/**/*.tsx', 'src/shared/ui/**/*.tsx', 'src/**/*-context.tsx'],
     rules: {
@@ -146,7 +146,7 @@ export default tseslint.config(
     },
   },
 
-  // beforeLoad-гварды TanStack бросают redirect() — это не Error, а сигнал роутера
+  // TanStack beforeLoad guards throw redirect() — not an Error, but a router signal
   {
     files: ['src/routes/**'],
     rules: {
@@ -154,7 +154,7 @@ export default tseslint.config(
     },
   },
 
-  // Конфиги в корне — без проверки типов, node-окружение
+  // Root config files — no type-checking, node environment
   {
     files: ['*.{js,ts}'],
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
@@ -163,11 +163,11 @@ export default tseslint.config(
     },
   },
 
-  // Prettier отключает форматные правила ESLint — идёт последним
+  // Prettier disables ESLint's formatting rules — must come last
   prettier,
 
-  // curly не конфликтует с Prettier, но eslint-config-prettier его гасит —
-  // возвращаем ПОСЛЕ него: всегда фигурные скобки в if/else/for/while
+  // curly doesn't conflict with Prettier, but eslint-config-prettier turns it off —
+  // re-enable it AFTER prettier: always use braces in if/else/for/while
   {
     files: ['src/**/*.{ts,tsx}'],
     rules: {

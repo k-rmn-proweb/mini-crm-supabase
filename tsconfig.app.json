@@ -16,12 +16,12 @@
     "noEmit": true,
     "jsx": "react-jsx",
 
-    /* Path aliases (baseUrl не нужен в TS 5+ — paths резолвятся относительно tsconfig) */
+    /* Path aliases (baseUrl not needed in TS 5+ — paths resolve relative to tsconfig) */
     "paths": {
       "@/*": ["./src/*"]
     },
 
-    /* Strict type-checking (требование PRD) */
+    /* Strict type-checking (PRD requirement) */
     "strict": true,
     "noUncheckedIndexedAccess": true,
 

@@ -8,7 +8,7 @@ export function useDeleteDeal() {
     mutationFn: (id: string) => deleteDeal(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: dealKeys.all })
-      toast.success('Сделка удалена')
+      toast.success('Deal deleted')
     },
   })
 }

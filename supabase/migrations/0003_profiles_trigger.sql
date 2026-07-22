@@ -1,8 +1,8 @@
 -- 0003_profiles_trigger.sql
--- Авто-создание записи в public.profiles при регистрации пользователя в auth.users.
--- full_name/avatar_url берём из user metadata (передаём при signUp: options.data.full_name).
--- security definer + пустой search_path — безопасная практика Supabase (защита от search_path hijack);
--- поэтому все объекты указываем полностью квалифицированно (public.profiles).
+-- Auto-create a public.profiles row when a user signs up in auth.users.
+-- full_name/avatar_url come from user metadata (passed at signUp: options.data.full_name).
+-- security definer + empty search_path — the safe Supabase practice (protects against search_path hijacking);
+-- so all objects are fully qualified (public.profiles).
 
 create or replace function public.handle_new_user()
 returns trigger

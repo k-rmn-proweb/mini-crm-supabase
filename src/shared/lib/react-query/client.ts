@@ -3,8 +3,8 @@ import { toast } from 'sonner'
 import { getErrorMessage } from '@/shared/utils'
 
 export const queryClient = new QueryClient({
-  // Глобальный перехват ошибок мутаций: любая упавшая запись показывает toast.
-  // Формы с инлайн-ошибками выключают его через meta.skipErrorToast.
+  // Global mutation error handler: any failed write shows a toast.
+  // Forms with inline errors disable it via meta.skipErrorToast.
   mutationCache: new MutationCache({
     onError: (error, _vars, _ctx, mutation) => {
       if (mutation.meta?.skipErrorToast) {

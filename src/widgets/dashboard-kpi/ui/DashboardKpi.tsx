@@ -35,25 +35,25 @@ export function DashboardKpi() {
 
   const items: Kpi[] = [
     {
-      label: 'Всего клиентов',
+      label: 'Total clients',
       value: clientList.length,
       icon: Users,
       color: 'bg-primary/10 text-primary',
     },
     {
-      label: 'Активных клиентов',
+      label: 'Active clients',
       value: clientList.filter((client) => client.status === 'active').length,
       icon: UserCheck,
       color: 'bg-blue-500/10 text-blue-600 dark:text-blue-400',
     },
     {
-      label: 'Открытые сделки',
+      label: 'Open deals',
       value: formatCurrency(openSum),
       icon: CircleDollarSign,
       color: 'bg-amber-500/10 text-amber-600 dark:text-amber-400',
     },
     {
-      label: 'Выигранные сделки',
+      label: 'Won deals',
       value: formatCurrency(wonSum),
       icon: Trophy,
       color: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400',

@@ -3,7 +3,7 @@ import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import type { QueryClient } from '@tanstack/react-query'
 import type { AuthState } from '@/entities/user'
 
-/** Контекст роутера: сессия (для гвардов) + queryClient (для загрузчиков). */
+/** Router context: session (for guards) + queryClient (for loaders). */
 export type RouterContext = {
   auth: AuthState
   queryClient: QueryClient

@@ -4,7 +4,7 @@ import { AppSidebar, MobileSidebar } from '@/widgets/app-sidebar'
 import { AppHeader } from '@/widgets/app-header'
 import { RealtimeSync } from '@/widgets/realtime-sync'
 
-/** Защищённая зона. Нет сессии — на /login. Сессию читаем напрямую (race-free). */
+/** Protected area. No session — go to /login. We read the session directly (race-free). */
 export const Route = createFileRoute('/_app')({
   beforeLoad: async () => {
     const { data } = await supabase.auth.getSession()

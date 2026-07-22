@@ -21,7 +21,7 @@ export function LogoutButton() {
       }}
     >
       <LogOut />
-      Выйти
+      Log out
     </Button>
   )
 }

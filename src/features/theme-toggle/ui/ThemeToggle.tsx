@@ -11,7 +11,7 @@ export function ThemeToggle() {
       variant="ghost"
       size="icon-sm"
       onClick={toggleTheme}
-      aria-label={theme === 'dark' ? 'Светлая тема' : 'Тёмная тема'}
+      aria-label={theme === 'dark' ? 'Light theme' : 'Dark theme'}
     >
       {theme === 'dark' ? <Sun /> : <Moon />}
     </Button>

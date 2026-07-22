@@ -10,10 +10,10 @@ export function useDeleteClient() {
     mutationFn: (id: string) => deleteClient(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: clientKeys.lists() })
-      // Каскад в БД снёс сделки/активности клиента — инвалидируем их ключи тоже.
+      // The DB cascade removed the client's deals/activities — invalidate their keys too.
       queryClient.invalidateQueries({ queryKey: dealKeys.all })
       queryClient.invalidateQueries({ queryKey: activityKeys.all })
-      toast.success('Клиент удалён')
+      toast.success('Client deleted')
     },
   })
 }

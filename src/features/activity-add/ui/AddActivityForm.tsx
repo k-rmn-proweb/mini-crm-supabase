@@ -59,14 +59,14 @@ export function AddActivityForm({ clientId }: { clientId: string }) {
       />
       <Textarea
         {...register('content')}
-        placeholder="Что произошло? (звонок, письмо, встреча…)"
+        placeholder="What happened? (call, email, meeting…)"
         rows={2}
         aria-invalid={Boolean(errors.content)}
       />
       {errors.content && <p className="text-sm text-destructive">{errors.content.message}</p>}
       <div className="flex justify-end">
         <Button type="submit" size="sm" disabled={create.isPending}>
-          {create.isPending ? 'Добавление…' : 'Добавить'}
+          {create.isPending ? 'Adding…' : 'Add'}
         </Button>
       </div>
     </form>

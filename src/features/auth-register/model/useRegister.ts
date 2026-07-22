@@ -3,8 +3,8 @@ import { supabase } from '@/shared/api'
 import type { RegisterValues } from '../lib/schema'
 
 /**
- * Регистрация. full_name уходит в user_metadata — триггер handle_new_user
- * положит его в profiles. При выключенном подтверждении email сессия создаётся сразу.
+ * Sign up. full_name goes into user_metadata — the handle_new_user trigger
+ * puts it into profiles. With email confirmation disabled, the session is created immediately.
  */
 export function useRegister() {
   return useMutation({

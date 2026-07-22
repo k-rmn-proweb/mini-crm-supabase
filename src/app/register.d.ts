@@ -1,9 +1,9 @@
 import type { router } from './router'
 
 /**
- * Module augmentation: регистрация типов TanStack Router.
- * Даёт глобальную типобезопасность навигации (Link, useParams, useNavigate и т.д.).
- * Применяется автоматически — файл входит в program через tsconfig `include`.
+ * Module augmentation: registers TanStack Router types.
+ * Provides global type safety for navigation (Link, useParams, useNavigate, etc.).
+ * Applied automatically — the file is part of the program via tsconfig `include`.
  */
 declare module '@tanstack/react-router' {
   interface Register {

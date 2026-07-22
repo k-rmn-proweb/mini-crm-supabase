@@ -1,9 +1,9 @@
 import { z } from 'zod'
 
 export const clientFormSchema = z.object({
-  name: z.string().min(1, 'Введите имя'),
+  name: z.string().min(1, 'Enter your name'),
   company: z.string(),
-  email: z.literal('').or(z.email('Некорректный email')),
+  email: z.literal('').or(z.email('Invalid email')),
   phone: z.string(),
   status: z.enum(['lead', 'active', 'inactive']),
 })

@@ -4,8 +4,8 @@ import type { ClientStatus } from '@/entities/client'
 export type StatusFilter = ClientStatus | 'all'
 
 /**
- * UI-состояние фильтров таблицы клиентов (Zustand). Значения параметризуют
- * серверный запрос. При смене поиска/статуса страница сбрасывается на первую.
+ * UI state for the clients table filters (Zustand). The values parameterize
+ * the server request. Changing the search/status resets the page to the first one.
  */
 type ClientsFiltersState = {
   search: string

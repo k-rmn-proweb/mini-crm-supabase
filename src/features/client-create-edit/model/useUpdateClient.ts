@@ -5,13 +5,13 @@ import { clientKeys, updateClient, type UpdateClientDto } from '@/entities/clien
 
 export function useUpdateClient() {
   return useMutation({
-    // Ошибку показываем инлайн в форме — глобальный toast не нужен.
+    // The error is shown inline in the form — no global toast needed.
     meta: { skipErrorToast: true },
     mutationFn: ({ id, dto }: { id: string; dto: UpdateClientDto }) => updateClient(id, dto),
     onSuccess: (_data, { id }) => {
       queryClient.invalidateQueries({ queryKey: clientKeys.lists() })
       queryClient.invalidateQueries({ queryKey: clientKeys.detail(id) })
-      toast.success('Клиент обновлён')
+      toast.success('Client updated')
     },
   })
 }

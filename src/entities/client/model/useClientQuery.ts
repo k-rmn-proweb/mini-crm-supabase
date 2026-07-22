@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { clientKeys } from '../api/keys'
 import { fetchClientById } from '../api/api'
 
-/** Один клиент по id (для карточки клиента). */
+/** A single client by id (for the client card). */
 export function useClientQuery(id: string) {
   return useQuery({
     queryKey: clientKeys.detail(id),

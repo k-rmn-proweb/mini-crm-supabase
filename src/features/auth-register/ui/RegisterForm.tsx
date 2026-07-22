@@ -8,7 +8,7 @@ import { registerSchema, type RegisterValues } from '../lib/schema'
 function toFriendly(error: unknown): string {
   const message = getErrorMessage(error)
   if (message.includes('already registered')) {
-    return 'Пользователь с таким email уже существует'
+    return 'A user with this email already exists'
   }
   return message
 }
@@ -37,7 +37,7 @@ export function RegisterForm({ onSuccess }: { onSuccess?: () => void }) {
       )}
 
       <div className="space-y-1.5">
-        <Label htmlFor="fullName">Имя</Label>
+        <Label htmlFor="fullName">Name</Label>
         <Input
           id="fullName"
           autoComplete="name"
@@ -60,7 +60,7 @@ export function RegisterForm({ onSuccess }: { onSuccess?: () => void }) {
       </div>
 
       <div className="space-y-1.5">
-        <Label htmlFor="password">Пароль</Label>
+        <Label htmlFor="password">Password</Label>
         <Input
           id="password"
           type="password"
@@ -72,7 +72,7 @@ export function RegisterForm({ onSuccess }: { onSuccess?: () => void }) {
       </div>
 
       <Button type="submit" className="w-full" disabled={registerMutation.isPending}>
-        {registerMutation.isPending ? 'Создаём аккаунт…' : 'Зарегистрироваться'}
+        {registerMutation.isPending ? 'Creating account…' : 'Sign up'}
       </Button>
     </form>
   )

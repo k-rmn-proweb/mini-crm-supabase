@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-/** Возвращает значение с задержкой — для дебаунса поиска и т.п. */
+/** Returns a delayed value — for debouncing search, etc. */
 export function useDebouncedValue<T>(value: T, delay = 300): T {
   const [debounced, setDebounced] = useState(value)
 

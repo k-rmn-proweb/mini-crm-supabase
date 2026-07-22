@@ -3,7 +3,7 @@ import { useClientsRealtime } from '@/entities/client'
 import { useDealsRealtime } from '@/entities/deal'
 import { useActivitiesRealtime } from '@/entities/activity'
 
-/** Headless-компонент: включает Realtime-подписки на данные текущего пользователя. */
+/** Headless component: enables Realtime subscriptions for the current user's data. */
 export function RealtimeSync() {
   const { user } = useSession()
   useClientsRealtime(user?.id)

@@ -24,13 +24,13 @@ import { DealFields } from './DealFields'
 type Props = {
   open: boolean
   onOpenChange: (open: boolean) => void
-  /** Есть сделка — режим редактирования; нет — создание. */
+  /** With a deal — edit mode; without — create mode. */
   deal?: Deal
-  /** Вызывается с созданной сделкой (для подсветки на доске). */
+  /** Called with the created deal (to highlight it on the board). */
   onSaved?: (deal: Deal) => void
 }
 
-/** Создание и редактирование сделки в правом drawer'е. */
+/** Create and edit a deal in the right-hand drawer. */
 export function DealDrawer({ open, onOpenChange, deal, onSaved }: Props) {
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -68,10 +68,10 @@ function DealCreateForm({
   return (
     <>
       <SheetHeader className="flex-row items-center justify-between gap-2 space-y-0 border-b">
-        <SheetTitle>Новая сделка</SheetTitle>
-        <SheetDescription className="sr-only">Форма создания сделки.</SheetDescription>
+        <SheetTitle>New deal</SheetTitle>
+        <SheetDescription className="sr-only">Deal creation form.</SheetDescription>
         <SheetClose asChild>
-          <Button variant="ghost" size="icon-sm" aria-label="Закрыть">
+          <Button variant="ghost" size="icon-sm" aria-label="Close">
             <X />
           </Button>
         </SheetClose>
@@ -93,10 +93,10 @@ function DealCreateForm({
 
       <SheetFooter className="flex-row justify-end gap-2 border-t">
         <Button type="button" variant="outline" onClick={onClose}>
-          Отмена
+          Cancel
         </Button>
         <Button type="submit" form="deal-create-form" disabled={createMutation.isPending}>
-          {createMutation.isPending ? 'Создание…' : 'Создать'}
+          {createMutation.isPending ? 'Creating…' : 'Create'}
         </Button>
       </SheetFooter>
     </>
@@ -114,7 +114,7 @@ function DealEditForm({ deal, onClose }: { deal: Deal; onClose: () => void }) {
     mode: 'onChange',
   })
 
-  // Актуальная функция сохранения — через ref, чтобы подписка не пересоздавалась.
+  // Keep the latest save function in a ref so the subscription isn't recreated.
   const saveRef = useRef((formValues: DealFormValues) => {
     updateMutation.mutate({ id: deal.id, dto: toDealDto(formValues) })
   })
@@ -124,7 +124,7 @@ function DealEditForm({ deal, onClose }: { deal: Deal; onClose: () => void }) {
 
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout> | undefined
-    // Стандартная RHF-подписка для авто-сохранения; watch стабилен внутри эффекта.
+    // Standard RHF subscription for auto-save; watch is stable inside the effect.
     // eslint-disable-next-line react-hooks/incompatible-library
     const sub = form.watch((formValues, { type }) => {
       if (type !== 'change') {
@@ -150,10 +150,8 @@ function DealEditForm({ deal, onClose }: { deal: Deal; onClose: () => void }) {
   return (
     <>
       <SheetHeader className="flex-row items-center justify-between gap-2 space-y-0 border-b">
-        <SheetTitle>Редактировать сделку</SheetTitle>
-        <SheetDescription className="sr-only">
-          Изменения сохраняются автоматически.
-        </SheetDescription>
+        <SheetTitle>Edit deal</SheetTitle>
+        <SheetDescription className="sr-only">Changes are saved automatically.</SheetDescription>
         <div className="flex items-center gap-1">
           <Button
             variant="ghost"
@@ -161,12 +159,12 @@ function DealEditForm({ deal, onClose }: { deal: Deal; onClose: () => void }) {
             className="text-destructive hover:text-destructive"
             onClick={remove}
             disabled={deleteMutation.isPending}
-            aria-label="Удалить сделку"
+            aria-label="Delete deal"
           >
             <Trash2 />
           </Button>
           <SheetClose asChild>
-            <Button variant="ghost" size="icon-sm" aria-label="Закрыть">
+            <Button variant="ghost" size="icon-sm" aria-label="Close">
               <X />
             </Button>
           </SheetClose>
@@ -179,7 +177,7 @@ function DealEditForm({ deal, onClose }: { deal: Deal; onClose: () => void }) {
 
       <SheetFooter className="border-t">
         <p className="text-xs text-muted-foreground">
-          {updateMutation.isPending ? 'Сохранение…' : 'Изменения сохраняются автоматически'}
+          {updateMutation.isPending ? 'Saving…' : 'Changes are saved automatically'}
         </p>
       </SheetFooter>
     </>

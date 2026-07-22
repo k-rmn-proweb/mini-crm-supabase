@@ -1,4 +1,4 @@
-// Публичный API сущности user.
+// Public API of the user entity.
 export { AuthProvider, useAuth, useSession } from './model/auth-context'
 export { useProfile } from './model/useProfile'
 export { fetchProfile } from './api/api'

@@ -1,5 +1,5 @@
-// Публичный API слоя shared/ui — общий barrel.
-// На каждый компонент — одна строка реэкспорта из его папки.
+// Public API of the shared/ui layer — a shared barrel.
+// One re-export line per component from its folder.
 export * from './alert-dialog'
 export * from './button'
 export * from './calendar'

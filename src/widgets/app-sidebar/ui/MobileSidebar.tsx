@@ -2,7 +2,7 @@ import { useUiStore } from '@/shared/store'
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/shared/ui'
 import { SidebarNav } from './SidebarNav'
 
-/** Мобильный сайдбар (drawer). Открывается бургером из шапки. */
+/** Mobile sidebar (drawer). Opened by the hamburger in the header. */
 export function MobileSidebar() {
   const open = useUiStore((s) => s.mobileSidebarOpen)
   const setOpen = useUiStore((s) => s.setMobileSidebarOpen)

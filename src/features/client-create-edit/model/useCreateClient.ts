@@ -5,12 +5,12 @@ import { clientKeys, createClient, type CreateClientDto } from '@/entities/clien
 
 export function useCreateClient() {
   return useMutation({
-    // Ошибку показываем инлайн в форме — глобальный toast не нужен.
+    // The error is shown inline in the form — no global toast needed.
     meta: { skipErrorToast: true },
     mutationFn: (dto: CreateClientDto) => createClient(dto),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: clientKeys.lists() })
-      toast.success('Клиент создан')
+      toast.success('Client created')
     },
   })
 }

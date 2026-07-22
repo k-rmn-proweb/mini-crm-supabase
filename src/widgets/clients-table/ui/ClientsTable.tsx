@@ -64,16 +64,16 @@ export function ClientsTable() {
   const total = data?.total ?? 0
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE))
   const hasFilters = debouncedSearch !== '' || status !== 'all'
-  // Спиннер, пока поиск «оседает»: набор ждёт дебаунса или идёт запрос по поиску.
+  // Spinner while the search settles: typing awaits debounce or a search request is in flight.
   const searchPending = search !== debouncedSearch || (isFetching && debouncedSearch !== '')
 
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="font-heading text-2xl font-semibold">Клиенты</h1>
+        <h1 className="font-heading text-2xl font-semibold">Clients</h1>
         <Button onClick={() => setForm({ open: true })}>
           <Plus />
-          Добавить клиента
+          Add client
         </Button>
       </div>
 
@@ -83,7 +83,7 @@ export function ClientsTable() {
           <Input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Поиск по имени или компании"
+            placeholder="Search by name or company"
             className="px-8"
           />
           <div className="absolute top-1/2 right-2 flex size-5 -translate-y-1/2 items-center justify-center">
@@ -93,7 +93,7 @@ export function ClientsTable() {
               <button
                 type="button"
                 onClick={() => setSearch('')}
-                aria-label="Очистить поиск"
+                aria-label="Clear search"
                 className="text-muted-foreground transition-colors hover:text-foreground"
               >
                 <X className="size-4" />
@@ -106,7 +106,7 @@ export function ClientsTable() {
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">Все статусы</SelectItem>
+            <SelectItem value="all">All statuses</SelectItem>
             {CLIENT_STATUS_OPTIONS.map((option) => (
               <SelectItem key={option.value} value={option.value}>
                 {option.label}
@@ -124,18 +124,18 @@ export function ClientsTable() {
         hasFilters ? (
           <EmptyState
             icon={Search}
-            title="Ничего не найдено"
-            description="Измените поиск или фильтр."
+            title="Nothing found"
+            description="Try a different search or filter."
           />
         ) : (
           <EmptyState
             icon={Users}
-            title="Пока нет клиентов"
-            description="Добавьте первого клиента, чтобы начать вести базу."
+            title="No clients yet"
+            description="Add your first client to get started."
             action={
               <Button onClick={() => setForm({ open: true })}>
                 <Plus />
-                Добавить клиента
+                Add client
               </Button>
             }
           />
@@ -151,12 +151,12 @@ export function ClientsTable() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Имя</TableHead>
-                  <TableHead>Компания</TableHead>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Company</TableHead>
                   <TableHead>Email</TableHead>
-                  <TableHead>Статус</TableHead>
-                  <TableHead>Создан</TableHead>
-                  <TableHead className="w-24 text-right">Действия</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Created</TableHead>
+                  <TableHead className="w-24 text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -180,7 +180,7 @@ export function ClientsTable() {
                         <Button
                           variant="ghost"
                           size="icon-sm"
-                          aria-label="Редактировать"
+                          aria-label="Edit"
                           onClick={(e) => {
                             e.stopPropagation()
                             setForm({ open: true, client })
@@ -191,7 +191,7 @@ export function ClientsTable() {
                         <Button
                           variant="ghost"
                           size="icon-sm"
-                          aria-label="Удалить"
+                          aria-label="Delete"
                           onClick={(e) => {
                             e.stopPropagation()
                             setToDelete({ open: true, client })
@@ -209,16 +209,16 @@ export function ClientsTable() {
 
           <div className="flex items-center justify-between gap-3 text-sm text-muted-foreground">
             <span>
-              {total} {plural(total, ['клиент', 'клиента', 'клиентов'])}
+              {total} {total === 1 ? 'client' : 'clients'}
             </span>
             <div className="flex items-center gap-2">
               <span>
-                Стр. {page + 1} из {totalPages}
+                Page {page + 1} of {totalPages}
               </span>
               <Button
                 variant="outline"
                 size="icon-sm"
-                aria-label="Предыдущая страница"
+                aria-label="Previous page"
                 disabled={page === 0}
                 onClick={() => setPage(page - 1)}
               >
@@ -227,7 +227,7 @@ export function ClientsTable() {
               <Button
                 variant="outline"
                 size="icon-sm"
-                aria-label="Следующая страница"
+                aria-label="Next page"
                 disabled={page >= totalPages - 1}
                 onClick={() => setPage(page + 1)}
               >
@@ -250,18 +250,6 @@ export function ClientsTable() {
       />
     </div>
   )
-}
-
-function plural(n: number, forms: [string, string, string]): string {
-  const mod10 = n % 10
-  const mod100 = n % 100
-  if (mod10 === 1 && mod100 !== 11) {
-    return forms[0]
-  }
-  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) {
-    return forms[1]
-  }
-  return forms[2]
 }
 
 function ClientsTableSkeleton() {

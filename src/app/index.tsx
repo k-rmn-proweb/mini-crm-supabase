@@ -11,14 +11,14 @@ function InnerApp() {
   const userId = auth.session?.user.id
 
   useEffect(() => {
-    // При смене пользователя (login/logout) пересчитать гварды роутов.
+    // On user change (login/logout), recompute the route guards.
     router.invalidate()
   }, [userId])
 
   if (auth.isLoading) {
     return (
       <div className="flex min-h-svh items-center justify-center text-sm text-muted-foreground">
-        Загрузка…
+        Loading…
       </div>
     )
   }

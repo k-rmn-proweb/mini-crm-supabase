@@ -4,14 +4,14 @@ import { persist } from 'zustand/middleware'
 export type Theme = 'light' | 'dark'
 
 /**
- * Клиентское UI-состояние (Zustand).
- * ВАЖНО: только UI — сайдбар, тема, модалки. Серверные данные — в TanStack Query.
+ * Client-side UI state (Zustand).
+ * IMPORTANT: UI only — sidebar, theme, modals. Server data lives in TanStack Query.
  */
 type UiState = {
   theme: Theme
-  /** Десктоп: сайдбар свёрнут до иконок. */
+  /** Desktop: sidebar collapsed to icons. */
   sidebarCollapsed: boolean
-  /** Мобайл: открыт drawer сайдбара. */
+  /** Mobile: sidebar drawer is open. */
   mobileSidebarOpen: boolean
   setTheme: (theme: Theme) => void
   toggleTheme: () => void
@@ -32,7 +32,7 @@ export const useUiStore = create<UiState>()(
     }),
     {
       name: 'mini-crm-ui',
-      // Мобильное открытие — транзиентное, не персистим.
+      // Mobile open state is transient — not persisted.
       partialize: (s) => ({ theme: s.theme, sidebarCollapsed: s.sidebarCollapsed }),
     },
   ),

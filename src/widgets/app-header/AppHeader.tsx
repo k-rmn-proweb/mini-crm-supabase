@@ -9,7 +9,7 @@ export function AppHeader() {
   const { user } = useSession()
   const { data: profile } = useProfile()
   const setMobileOpen = useUiStore((s) => s.setMobileSidebarOpen)
-  const name = profile?.full_name || user?.email || 'Пользователь'
+  const name = profile?.full_name || user?.email || 'User'
 
   return (
     <header className="flex h-14 items-center justify-between border-b px-4">
@@ -18,7 +18,7 @@ export function AppHeader() {
           variant="ghost"
           size="icon-sm"
           className="md:hidden"
-          aria-label="Открыть меню"
+          aria-label="Open menu"
           onClick={() => setMobileOpen(true)}
         >
           <Menu />

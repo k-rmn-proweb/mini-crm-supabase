@@ -10,8 +10,8 @@ type ErrorStateProps = {
 }
 
 export function ErrorState({
-  title = 'Не удалось загрузить данные',
-  description = 'Проверьте соединение и попробуйте снова.',
+  title = 'Failed to load data',
+  description = 'Check your connection and try again.',
   onRetry,
   className,
 }: ErrorStateProps) {
@@ -29,7 +29,7 @@ export function ErrorState({
       </div>
       {onRetry && (
         <Button variant="outline" size="sm" onClick={onRetry}>
-          Повторить
+          Retry
         </Button>
       )}
     </div>

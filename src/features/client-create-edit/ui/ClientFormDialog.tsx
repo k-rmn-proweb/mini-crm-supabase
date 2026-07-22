@@ -82,9 +82,9 @@ export function ClientFormDialog({ open, onOpenChange, client }: Props) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>{isEdit ? 'Редактировать клиента' : 'Новый клиент'}</DialogTitle>
+          <DialogTitle>{isEdit ? 'Edit client' : 'New client'}</DialogTitle>
           <DialogDescription>
-            {isEdit ? 'Измените данные клиента.' : 'Заполните данные нового клиента.'}
+            {isEdit ? "Update the client's details." : "Fill in the new client's details."}
           </DialogDescription>
         </DialogHeader>
 
@@ -96,13 +96,13 @@ export function ClientFormDialog({ open, onOpenChange, client }: Props) {
           )}
 
           <div className="space-y-1.5">
-            <Label htmlFor="name">Имя</Label>
+            <Label htmlFor="name">Name</Label>
             <Input id="name" aria-invalid={Boolean(errors.name)} {...register('name')} />
             {errors.name && <p className="text-sm text-destructive">{errors.name.message}</p>}
           </div>
 
           <div className="space-y-1.5">
-            <Label htmlFor="company">Компания</Label>
+            <Label htmlFor="company">Company</Label>
             <Input id="company" {...register('company')} />
           </div>
 
@@ -118,12 +118,12 @@ export function ClientFormDialog({ open, onOpenChange, client }: Props) {
           </div>
 
           <div className="space-y-1.5">
-            <Label htmlFor="phone">Телефон</Label>
+            <Label htmlFor="phone">Phone</Label>
             <Input id="phone" {...register('phone')} />
           </div>
 
           <div className="space-y-1.5">
-            <Label htmlFor="status">Статус</Label>
+            <Label htmlFor="status">Status</Label>
             <Controller
               control={control}
               name="status"
@@ -146,10 +146,10 @@ export function ClientFormDialog({ open, onOpenChange, client }: Props) {
 
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-              Отмена
+              Cancel
             </Button>
             <Button type="submit" disabled={active.isPending}>
-              {active.isPending ? 'Сохранение…' : 'Сохранить'}
+              {active.isPending ? 'Saving…' : 'Save'}
             </Button>
           </DialogFooter>
         </form>

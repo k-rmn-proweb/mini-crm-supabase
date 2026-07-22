@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query'
 import { queryClient } from '@/shared/lib'
 import { dealKeys, updateDealStage, type Deal, type DealStage } from '@/entities/deal'
 
-/** Смена этапа сделки (drag&drop). Оптимистично обновляет доску, откатывает при ошибке. */
+/** Change a deal's stage (drag & drop). Optimistically updates the board, rolls back on error. */
 export function useUpdateDealStage() {
   return useMutation({
     mutationFn: ({ id, stage }: { id: string; stage: DealStage }) => updateDealStage(id, stage),

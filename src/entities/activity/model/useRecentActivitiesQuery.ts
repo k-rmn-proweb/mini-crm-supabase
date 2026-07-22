@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { activityKeys } from '../api/keys'
 import { fetchRecentActivities } from '../api/api'
 
-/** Последние активности по всем клиентам (лента дашборда). */
+/** Recent activities across all clients (dashboard feed). */
 export function useRecentActivitiesQuery() {
   return useQuery({
     queryKey: activityKeys.recent(),

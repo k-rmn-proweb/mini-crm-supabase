@@ -35,16 +35,16 @@ export function DeleteClientDialog({ open, onOpenChange, client }: Props) {
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Удалить клиента?</AlertDialogTitle>
+          <AlertDialogTitle>Delete client?</AlertDialogTitle>
           <AlertDialogDescription>
-            Клиент {client?.name ? `«${client.name}»` : ''} и все его сделки и активности будут
-            удалены безвозвратно.
+            The client {client?.name ? `«${client.name}»` : ''} and all their deals and activities
+            will be permanently deleted.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={deleteMutation.isPending}>Отмена</AlertDialogCancel>
+          <AlertDialogCancel disabled={deleteMutation.isPending}>Cancel</AlertDialogCancel>
           <Button variant="destructive" onClick={confirm} disabled={deleteMutation.isPending}>
-            {deleteMutation.isPending ? 'Удаление…' : 'Удалить'}
+            {deleteMutation.isPending ? 'Deleting…' : 'Delete'}
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>

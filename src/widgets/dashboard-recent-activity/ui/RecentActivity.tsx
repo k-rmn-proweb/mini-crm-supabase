@@ -24,7 +24,7 @@ export function RecentActivity() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Последние активности</CardTitle>
+        <CardTitle>Recent activity</CardTitle>
       </CardHeader>
       <CardContent>
         {isLoading ? (
@@ -38,8 +38,8 @@ export function RecentActivity() {
         ) : !activities || activities.length === 0 ? (
           <EmptyState
             icon={MessageSquare}
-            title="Нет активностей"
-            description="Активности появятся, когда вы их добавите клиентам."
+            title="No activities"
+            description="Activities will appear once you add them to clients."
           />
         ) : (
           <ul className="space-y-4">

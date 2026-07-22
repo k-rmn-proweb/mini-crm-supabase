@@ -9,7 +9,7 @@ export function useCreateDeal() {
     mutationFn: (dto: CreateDealDto) => createDeal(dto),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: dealKeys.all })
-      toast.success('Сделка создана')
+      toast.success('Deal created')
     },
   })
 }

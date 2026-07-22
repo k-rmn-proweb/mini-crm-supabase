@@ -1,4 +1,4 @@
-// Публичный API сущности activity.
+// Public API of the activity entity.
 export { useClientActivitiesQuery } from './model/useClientActivitiesQuery'
 export { useRecentActivitiesQuery } from './model/useRecentActivitiesQuery'
 export { useActivitiesRealtime } from './model/useActivitiesRealtime'

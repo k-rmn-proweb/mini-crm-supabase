@@ -8,8 +8,8 @@ export function RegisterPage() {
   return (
     <Card className="w-full max-w-sm">
       <CardHeader>
-        <CardTitle>Регистрация</CardTitle>
-        <CardDescription>Создайте аккаунт Mini-CRM</CardDescription>
+        <CardTitle>Sign up</CardTitle>
+        <CardDescription>Create your Mini-CRM account</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <RegisterForm
@@ -18,9 +18,9 @@ export function RegisterPage() {
           }}
         />
         <p className="text-center text-sm text-muted-foreground">
-          Уже есть аккаунт?{' '}
+          Already have an account?{' '}
           <Link to="/login" className="text-foreground underline underline-offset-4">
-            Войти
+            Sign in
           </Link>
         </p>
       </CardContent>

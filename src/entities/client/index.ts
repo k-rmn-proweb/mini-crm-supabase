@@ -1,4 +1,4 @@
-// Публичный API сущности client.
+// Public API of the client entity.
 export { useClientsQuery } from './model/useClientsQuery'
 export { useClientQuery } from './model/useClientQuery'
 export { useClientOptions } from './model/useClientOptions'

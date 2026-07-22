@@ -7,7 +7,7 @@ import { tanstackRouter } from '@tanstack/router-plugin/vite'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
-    // TanStack Router plugin должен идти ДО react() — генерирует routeTree.gen.ts
+    // The TanStack Router plugin must come BEFORE react() — it generates routeTree.gen.ts
     tanstackRouter({
       target: 'react',
       routesDirectory: './src/routes',

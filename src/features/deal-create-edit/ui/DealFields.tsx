@@ -13,7 +13,7 @@ import { useClientOptions } from '@/entities/client'
 import { DEAL_STAGE_OPTIONS } from '@/entities/deal'
 import type { DealFormValues } from '../lib/schema'
 
-/** Поля формы сделки — общие для диалога создания и drawer'а редактирования. */
+/** Deal form fields — shared by the create dialog and the edit drawer. */
 export function DealFields({ form }: { form: UseFormReturn<DealFormValues> }) {
   const {
     register,
@@ -25,20 +25,20 @@ export function DealFields({ form }: { form: UseFormReturn<DealFormValues> }) {
   return (
     <>
       <div className="space-y-1.5">
-        <Label htmlFor="title">Название</Label>
+        <Label htmlFor="title">Title</Label>
         <Input id="title" aria-invalid={Boolean(errors.title)} {...register('title')} />
         {errors.title && <p className="text-sm text-destructive">{errors.title.message}</p>}
       </div>
 
       <div className="space-y-1.5">
-        <Label htmlFor="clientId">Клиент</Label>
+        <Label htmlFor="clientId">Client</Label>
         <Controller
           control={control}
           name="clientId"
           render={({ field }) => (
             <Select value={field.value} onValueChange={field.onChange}>
               <SelectTrigger id="clientId" className="w-full">
-                <SelectValue placeholder="Выберите клиента" />
+                <SelectValue placeholder="Select a client" />
               </SelectTrigger>
               <SelectContent>
                 {clients?.map((client) => (
@@ -55,7 +55,7 @@ export function DealFields({ form }: { form: UseFormReturn<DealFormValues> }) {
 
       <div className="grid grid-cols-2 gap-3">
         <div className="space-y-1.5">
-          <Label htmlFor="amount">Сумма</Label>
+          <Label htmlFor="amount">Amount</Label>
           <Input
             id="amount"
             type="number"
@@ -67,7 +67,7 @@ export function DealFields({ form }: { form: UseFormReturn<DealFormValues> }) {
           {errors.amount && <p className="text-sm text-destructive">{errors.amount.message}</p>}
         </div>
         <div className="space-y-1.5">
-          <Label htmlFor="stage">Этап</Label>
+          <Label htmlFor="stage">Stage</Label>
           <Controller
             control={control}
             name="stage"
@@ -90,7 +90,7 @@ export function DealFields({ form }: { form: UseFormReturn<DealFormValues> }) {
       </div>
 
       <div className="space-y-1.5">
-        <Label htmlFor="expectedCloseDate">Ожидаемая дата закрытия</Label>
+        <Label htmlFor="expectedCloseDate">Expected close date</Label>
         <Controller
           control={control}
           name="expectedCloseDate"

@@ -11,8 +11,8 @@ type Props = {
 }
 
 export function DraggableDealCard({ deal, clientName, highlighted, onClick }: Props) {
-  // Визуал перетаскивания даёт DragOverlay, поэтому transform к источнику не применяем —
-  // карточка остаётся на месте (приглушённая), а соседи плавно сдвигаются через layout.
+  // DragOverlay provides the drag visual, so we don't apply a transform to the source —
+  // the card stays in place (dimmed) while neighbors shift smoothly via layout.
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({ id: deal.id })
 
   return (

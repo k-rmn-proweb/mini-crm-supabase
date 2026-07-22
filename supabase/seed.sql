@@ -1,12 +1,12 @@
--- seed.sql — демо-данные для аккаунта demo@minicrm.app.
--- Запускать в SQL Editor ПОСЛЕ создания демо-пользователя (Authentication → Add user, Auto Confirm).
--- Идемпотентно: сносит прежние данные этого юзера (каскадом deals+activities) и вставляет заново.
--- Пользователь ищется по email — хардкода UUID нет.
+-- seed.sql — demo data for the demo@minicrm.app account.
+-- Run in the SQL Editor AFTER creating the demo user (Authentication → Add user, Auto Confirm).
+-- Idempotent: removes this user's previous data (deals+activities cascade) and re-inserts it.
+-- The user is looked up by email — no hardcoded UUID.
 
 do $$
 declare
   demo_id uuid;
-  -- фиксированные id клиентов, чтобы ссылаться из deals/activities
+  -- fixed client ids so deals/activities can reference them
   c1  uuid := '0a000000-0000-4000-8000-000000000001';
   c2  uuid := '0a000000-0000-4000-8000-000000000002';
   c3  uuid := '0a000000-0000-4000-8000-000000000003';
@@ -22,16 +22,16 @@ declare
 begin
   select id into demo_id from auth.users where email = 'demo@minicrm.app';
   if demo_id is null then
-    raise exception 'Демо-пользователь demo@minicrm.app не найден. Сначала создай его в Authentication.';
+    raise exception 'Demo user demo@minicrm.app not found. Create it in Authentication first.';
   end if;
 
-  -- Имя в профиле (триггер создал профиль с пустым full_name).
+  -- Profile name (the trigger created the profile with an empty full_name).
   update public.profiles set full_name = 'Demo User' where id = demo_id;
 
-  -- Очистка прежних демо-данных (deals/activities уйдут каскадом).
+  -- Clean up previous demo data (deals/activities are removed via cascade).
   delete from public.clients where user_id = demo_id;
 
-  -- === Клиенты (created_at разнесён по месяцам 2026 для графика динамики) ===
+  -- === Clients (created_at spread across 2026 months for the trend chart) ===
   insert into public.clients (id, user_id, name, company, email, phone, status, created_at, updated_at) values
     (c1,  demo_id, 'John Carter',    'Acme Corp',          'john@acme.io',        '+1 415 555 0101', 'active',   '2026-01-12', '2026-01-12'),
     (c2,  demo_id, 'Sarah Mitchell', 'Globex Ltd',         'sarah@globex.com',    '+1 415 555 0102', 'active',   '2026-01-28', '2026-01-28'),
@@ -46,7 +46,7 @@ begin
     (c11, demo_id, 'James Park',     'Massive Dynamic',    'james@massive.com',   '+1 415 555 0111', 'inactive', '2026-06-25', '2026-06-25'),
     (c12, demo_id, 'Olivia Grant',   'Cyberdyne Systems',  'olivia@cyberdyne.io', '+1 415 555 0112', 'lead',     '2026-07-11', '2026-07-11');
 
-  -- === Сделки (по этапам: new/negotiation/won/lost) ===
+  -- === Deals (by stage: new/negotiation/won/lost) ===
   insert into public.deals (user_id, client_id, title, amount, stage, expected_close_date, created_at, updated_at) values
     (demo_id, c1,  'Website redesign',      12000, 'won',         '2026-03-01', '2026-01-20', '2026-03-01'),
     (demo_id, c1,  'Design system',         22000, 'negotiation', '2026-08-15', '2026-06-10', '2026-06-10'),
@@ -65,7 +65,7 @@ begin
     (demo_id, c11, 'Support contract',       7000, 'lost',        '2026-07-01', '2026-06-27', '2026-07-01'),
     (demo_id, c12, 'Analytics setup',       11000, 'new',         '2026-09-15', '2026-07-14', '2026-07-14');
 
-  -- === Активности (call/email/meeting/note) ===
+  -- === Activities (call/email/meeting/note) ===
   insert into public.activities (user_id, client_id, type, content, created_at) values
     (demo_id, c1,  'call',    'Kickoff call — discussed redesign scope and timeline.',   '2026-07-10'),
     (demo_id, c1,  'email',   'Sent proposal and homepage mockups for review.',          '2026-07-12'),
@@ -86,5 +86,5 @@ begin
     (demo_id, c11, 'call',    'Contract not renewed; account archived.',                 '2026-06-27'),
     (demo_id, c12, 'meeting', 'Analytics setup — defined the key events to track.',      '2026-07-20');
 
-  raise notice 'Seed готов: 12 клиентов, 16 сделок, 18 активностей для %.', demo_id;
+  raise notice 'Seed complete: 12 clients, 16 deals, 18 activities for %.', demo_id;
 end $$;

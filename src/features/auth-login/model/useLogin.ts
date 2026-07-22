@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query'
 import { supabase } from '@/shared/api'
 import type { LoginValues } from '../lib/schema'
 
-/** Вход по email/паролю. Сессию подхватит AuthProvider через onAuthStateChange. */
+/** Sign in with email/password. AuthProvider picks up the session via onAuthStateChange. */
 export function useLogin() {
   return useMutation({
     meta: { skipErrorToast: true },

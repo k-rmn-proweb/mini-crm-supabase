@@ -1,46 +1,46 @@
 # Mini-CRM Dashboard
 
-Веб-приложение для управления клиентами и сделками с аналитическим дашбордом.
-Упрощённый Pipedrive/HubSpot для одного пользователя: клиенты → сделки (воронка) → активности → аналитика.
+A web app for managing clients and deals with an analytics dashboard.
+A simplified single-user Pipedrive/HubSpot: clients → deals (pipeline) → activities → analytics.
 
-> Портфолио-проект. Живой демо-URL появится после деплоя (Фаза 8).
+> Portfolio project. A live demo URL will appear after deployment (Phase 8).
 
-## Стек
+## Stack
 
 - **React 19** + **TypeScript** (strict mode)
-- **Vite** — сборка
+- **Vite** — build tooling
 - **Tailwind CSS v4** + **shadcn/ui** (Radix) — UI
-- **TanStack Router** — типобезопасный роутинг (file-based)
-- **TanStack Query** — серверное состояние (данные из Supabase)
-- **Zustand** — клиентское UI-состояние (сайдбар, тема, фильтры)
-- **React Hook Form + Zod** — формы и валидация
+- **TanStack Router** — type-safe routing (file-based)
+- **TanStack Query** — server state (data from Supabase)
+- **Zustand** — client UI state (sidebar, theme, filters)
+- **React Hook Form + Zod** — forms and validation
 - **Supabase** — Postgres + Auth + RLS
-- **Recharts** — графики · **dnd-kit** — Kanban-воронка · **lucide-react** — иконки
-- **Feature-Sliced Design** — архитектура (границы слоёв под контролем ESLint)
+- **Recharts** — charts · **dnd-kit** — Kanban pipeline · **lucide-react** — icons
+- **Feature-Sliced Design** — architecture (layer boundaries enforced by ESLint)
 - **ESLint** (typescript-eslint strict) + **Prettier**
 
-## Быстрый старт
+## Quick start
 
 ```bash
 pnpm install
-cp .env.example .env   # заполнить ключами Supabase
+cp .env.example .env   # fill in your Supabase keys
 pnpm dev
 ```
 
-## Скрипты
+## Scripts
 
-| Команда          | Назначение                                 |
-| ---------------- | ------------------------------------------ |
-| `pnpm dev`       | Dev-сервер (Vite)                          |
-| `pnpm build`     | Production-сборка (`tsc -b && vite build`) |
-| `pnpm preview`   | Предпросмотр собранного бандла             |
-| `pnpm lint`      | ESLint (включая контроль границ FSD)       |
-| `pnpm typecheck` | Проверка типов без эмита                   |
-| `pnpm format`    | Форматирование Prettier                    |
+| Command          | Purpose                                   |
+| ---------------- | ----------------------------------------- |
+| `pnpm dev`       | Dev server (Vite)                         |
+| `pnpm build`     | Production build (`tsc -b && vite build`) |
+| `pnpm preview`   | Preview the built bundle                  |
+| `pnpm lint`      | ESLint (including FSD boundary checks)    |
+| `pnpm typecheck` | Type check without emit                   |
+| `pnpm format`    | Format with Prettier                      |
 
-## Архитектура (FSD)
+## Architecture (FSD)
 
-Слои сверху вниз, зависимости строго однонаправленные:
+Layers top to bottom, dependencies strictly one-directional:
 
 ```
 app → routes → pages → widgets → features → entities → shared
@@ -48,20 +48,20 @@ app → routes → pages → widgets → features → entities → shared
 
 ```
 src/
-  app/        # провайдеры (Query, Router), композиция приложения
-  routes/     # определения маршрутов TanStack Router (тонкие обёртки над pages)
-  pages/      # страницы под роут
-  widgets/    # крупные блоки UI (таблицы, доски, графики)
-  features/   # действия пользователя (мутации, формы, диалоги)
-  entities/   # бизнес-сущности (модель, query-хуки, базовый UI)
-  shared/     # переиспользуемое: api (Supabase), ui (shadcn), utils, lib, config, store
+  app/        # providers (Query, Router), app composition
+  routes/     # TanStack Router route definitions (thin wrappers over pages)
+  pages/      # per-route pages
+  widgets/    # large UI blocks (tables, boards, charts)
+  features/   # user actions (mutations, forms, dialogs)
+  entities/   # business entities (model, query hooks, base UI)
+  shared/     # reusable: api (Supabase), ui (shadcn), utils, lib, config, store
 ```
 
-## Переменные окружения
+## Environment variables
 
 ```
-VITE_SUPABASE_URL=<url проекта Supabase>
+VITE_SUPABASE_URL=<Supabase project URL>
 VITE_SUPABASE_ANON_KEY=<anon public key>
 ```
 
-Anon key публичный — безопасность обеспечивается через RLS. Service role key во фронтенде не используется.
+The anon key is public — security is enforced via RLS. The service role key is not used in the frontend.

@@ -3,7 +3,7 @@ import { supabase } from '@/shared/api'
 import { queryClient } from '@/shared/lib'
 import { clientKeys } from '../api/keys'
 
-/** Подписка на изменения клиентов (Realtime) → инвалидация ключей → авто-рефетч. */
+/** Subscribe to client changes (Realtime) → invalidate keys → auto-refetch. */
 export function useClientsRealtime(userId?: string) {
   useEffect(() => {
     if (!userId) {

@@ -1,17 +1,36 @@
 import { supabase } from '@/shared/api'
 import type { Client } from '../model/types'
-import type { CreateClientDto, UpdateClientDto } from './dto'
+import type { ClientsPage, ClientsQueryParams, CreateClientDto, UpdateClientDto } from './dto'
 
-/** Список клиентов пользователя (RLS отдаёт только свои), новые сверху. */
-export async function fetchClients(): Promise<Client[]> {
-  const { data, error } = await supabase
+/**
+ * Серверный список клиентов: поиск (ilike по имени/компании), фильтр по статусу,
+ * пагинация (range) и общее число (count). RLS отдаёт только свои записи.
+ */
+export async function fetchClients(params: ClientsQueryParams): Promise<ClientsPage> {
+  const { search, status, page, pageSize } = params
+  const from = page * pageSize
+  const to = from + pageSize - 1
+
+  let query = supabase
     .from('clients')
-    .select('*')
+    .select('*', { count: 'exact' })
     .order('created_at', { ascending: false })
+    .range(from, to)
+
+  if (status) {
+    query = query.eq('status', status)
+  }
+
+  const term = search.replace(/[%,()]/g, ' ').trim()
+  if (term) {
+    query = query.or(`name.ilike.%${term}%,company.ilike.%${term}%`)
+  }
+
+  const { data, error, count } = await query
   if (error) {
     throw error
   }
-  return data
+  return { rows: data, total: count ?? 0 }
 }
 
 /** Один клиент по id. */

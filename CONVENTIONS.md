@@ -112,57 +112,78 @@ shared/lib/
 > shadcn ждёт `cn` по алиасу `utils` в `components.json` → указывает на `@/shared/utils/cn`.
 > Сгенерированные компоненты импортируют `@/shared/utils/cn`; при рефакторинге меняем на barrel `@/shared/utils`.
 
-## Data-access: эндпоинты, ключи, хуки (entities + features)
+## Структура слайса (entities / features) и data-access
 
 Единый источник правды по ресурсу — его **сущность**. Централизация пер-ресурсная,
-не глобальная: и read, и write определяются один раз в `entities/<entity>/api`,
+не глобальная: и read, и write определяются один раз в `entities/<entity>`,
 а `features` их только используют. Так эндпоинты и ключи не разбросаны по слоям.
 
 ```
-entities/client/api/
-  client.keys.ts      # фабрика query-ключей (единственное определение ключей клиента)
-  client.api.ts       # ВСЕ эндпоинты клиента: fetchClients, fetchClientById,
-                      #   createClient, updateClient, deleteClient
-                      #   — чистые async-функции: возвращают данные, кидают ошибку.
-                      #   Единственное место сырых supabase-запросов клиента.
-  client.queries.ts   # read-хуки: useClientsQuery, useClientQuery (keys + api)
-  index.ts            # публичный API: keys, api-методы, read-хуки
+entities/client/
+  api/                    # определения БЕЗ React
+    keys.ts               #   clientKeys — фабрика query-ключей (единственное определение)
+    api.ts                #   эндпоинты: fetchClients, fetchClientById, createClient,
+                          #     updateClient, deleteClient — чистые async, сырые supabase-запросы
+    dto.ts                #   CreateClientDto, UpdateClientDto, response-типы
+  model/                  # React / логика
+    types.ts              #   доменный тип Client, ClientStatus (выводится из Tables<'clients'>)
+    useClientsQuery.ts    #   read-хуки (keys + api)
+    useClientQuery.ts
+  index.ts                # публичный API сущности (один на слайс)
 
-features/client-create-edit/api/
-  use-create-client.ts  # useMutation → client.api.createClient + инвалидация client.keys
-  use-update-client.ts
+features/client-create-edit/
+  model/
+    useCreateClient.ts    # useMutation → client.api.createClient + инвалидация нужных ключей
+    useUpdateClient.ts
+  lib/
+    schema.ts             # Zod-схема формы (резолвится в CreateClientDto)
+    consts.ts
+  ui/
+    ClientFormDialog.tsx  # форма + диалог, зовёт хук из model
+  index.ts
+
+features/client-delete/    # отдельное действие (как в PRD)
+  model/  useDeleteClient.ts
+  ui/     ConfirmDeleteDialog.tsx
   index.ts
 ```
 
-**Разделение ответственности:**
+**Сегменты — `api` vs `model`:**
 
-- `entities/<entity>/api` = **data-access слой ресурса**: ключи + все эндпоинты (read и write) + read-хуки.
-- `features/<action>/api` = **оркестрация действия пользователя**: mutation-хук (вызвать эндпоинт
-  из сущности + инвалидировать нужные ключи + тост + связка с формой). Фича НЕ переопределяет
-  эндпоинты и ключи — импортирует готовые из `@/entities/<entity>`.
-- Границы FSD целы: `features → entities` разрешён; сущность про фичи не знает.
+- `api/` = **определения без React**: ключи, сырые request-функции, DTO/response-типы.
+- `model/` = **React/логика**: доменные типы, query/mutation-хуки, сторы.
+- Read-хук → `entities/<e>/model`; mutation-хук → `features/<action>/model`. Оба в `model` своего слайса.
+
+**Типы — где:**
+
+| Тип | Место |
+|---|---|
+| DB Row / Insert / Update (генерённые) | `shared/api/supabase/database.types.ts` |
+| Доменный `Client`, `ClientStatus` | `entities/client/model/types.ts` |
+| `CreateClientDto` / `UpdateClientDto` / response | `entities/client/api/dto.ts` |
+| Кросс-сущностная склейка (client+deals) | виджет/страница, что композирует |
+
+Тип живёт в самом низком слайсе, который им владеет; все выше импортируют его вниз.
+Доменные типы деривим из генерённых (`Tables<'clients'>`), не пишем вручную. Эндпоинт
+по умолчанию возвращает доменный тип — верхние слои не трогают сырые Row.
 
 **Почему mutation-хуки в features, а НЕ в entities (ключевое):**
 
 В FSD слайсы одного слоя не импортируют друг друга (`entities/deal` ↛ `entities/client`).
 А мутация часто инвалидирует ключи **нескольких** сущностей. `feature` может импортировать
 несколько entities (импорт вниз) и дёрнуть `dealKeys` + `clientKeys`; мутация внутри
-`entities/deal` до `clientKeys` не дотянулась бы. Поэтому:
+`entities/deal` до `clientKeys` не дотянулась бы. Поэтому ключи+read-хуки — в сущности,
+mutation-хуки — в фиче. Кросс-сущностные read (дашборд) — в `widgets/dashboard-*`
+(виджет импортит несколько entities); агрегаты из entity-запросов, инвалидация
+entity-ключей освежает и дашборд.
 
-- **Ключи и read-хуки** — в сущности (read трогает только свои ключи → cross-import не нужен).
-- **Mutation-хуки** — в фиче (импортит ключи нескольких entities для инвалидации).
+**Именование слайсов и файлов:**
 
-Примеры:
-- `client-delete` (каскад в БД сносит deals+activities) → фича инвалидирует `clientKeys`,
-  `dealKeys`, `activityKeys` (импорт трёх entities вниз — ок).
-- Кросс-сущностные read (дашборд) — в `widgets/dashboard-*` (виджет импортит несколько entities).
-  Агрегаты выводятся из entity-запросов → инвалидация entity-ключей освежает и дашборд;
-  отдельные «dashboard-ключи» не нужны.
-
-**Правила:**
-
-- Определение эндпоинта и ключа — один раз, в сущности. Дубликатов в фичах быть не должно.
-- `*.api.ts` — только транспорт-вызовы, без React и без query-кеша (чистые функции).
-  Кеш/хуки — в `*.queries.ts` (read) и в фичах (write).
-- Файлы — kebab-case (`client.api.ts`, `use-create-client.ts`). Ключи — фабрика-объект
-  (`clientKeys.all / lists() / list(filters) / details() / detail(id)`).
+- Фича именуется **действием**, не существительным: `client-create-edit`, `client-delete`
+  (не `features/client` — доменное существительное = entity).
+- `index.ts` — **только на уровне слайса**. Сегменты (`api/model/ui/lib`) barrel'ов не имеют,
+  внутри слайса — относительные импорты.
+- Файлы: компоненты — `PascalCase.tsx` (`ClientFormDialog.tsx`); хуки — по имени хука
+  (`useClientsQuery.ts`); определения/утилиты — `lowercase` (`keys.ts`, `api.ts`, `dto.ts`, `schema.ts`).
+- Определение эндпоинта и ключа — один раз, в сущности; дубликатов в фичах нет.
+  Ключи — фабрика-объект (`clientKeys.all / lists() / list(filters) / details() / detail(id)`).

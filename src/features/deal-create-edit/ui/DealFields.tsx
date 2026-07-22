@@ -1,5 +1,6 @@
 import { Controller, type UseFormReturn } from 'react-hook-form'
 import {
+  DatePicker,
   Input,
   Label,
   Select,
@@ -90,7 +91,13 @@ export function DealFields({ form }: { form: UseFormReturn<DealFormValues> }) {
 
       <div className="space-y-1.5">
         <Label htmlFor="expectedCloseDate">Ожидаемая дата закрытия</Label>
-        <Input id="expectedCloseDate" type="date" {...register('expectedCloseDate')} />
+        <Controller
+          control={control}
+          name="expectedCloseDate"
+          render={({ field }) => (
+            <DatePicker id="expectedCloseDate" value={field.value} onChange={field.onChange} />
+          )}
+        />
       </div>
     </>
   )

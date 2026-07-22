@@ -39,6 +39,9 @@ pnpm-debug.log*
 # TanStack Router сгенерированное дерево (по желанию можно коммитить)
 # src/routeTree.gen.ts
 
+# TanStack Router временный кеш плагина
+.tanstack/
+
 # Vite / TS cache
 *.tsbuildinfo
 .vite/

@@ -16,7 +16,7 @@ export function DealCard({ deal, clientName, highlighted }: Props) {
       className={cn(
         'space-y-2 rounded-lg border border-l-[3px] bg-card p-3 shadow-xs transition-all',
         'hover:-translate-y-0.5 hover:shadow-md',
-        highlighted && 'ring-2 ring-primary duration-150',
+        highlighted && 'bg-primary/10',
       )}
       style={{ borderLeftColor: DEAL_STAGE_COLORS[deal.stage] }}
     >

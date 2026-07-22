@@ -125,14 +125,27 @@ export default tseslint.config(
         'error',
         { allowNumber: true, allowBoolean: true },
       ],
+      // '' (пустая строка) должна проваливаться на fallback → || для строк оставляем
+      '@typescript-eslint/prefer-nullish-coalescing': [
+        'error',
+        { ignorePrimitives: { string: true } },
+      ],
     },
   },
 
-  // Route-файлы TanStack и обёртки shadcn/ui легитимно экспортируют не только компоненты
+  // Route-файлы TanStack, обёртки shadcn/ui и context-провайдеры (провайдер + хуки в одном файле)
   {
-    files: ['src/routes/**/*.tsx', 'src/shared/ui/**/*.tsx'],
+    files: ['src/routes/**/*.tsx', 'src/shared/ui/**/*.tsx', 'src/**/*-context.tsx'],
     rules: {
       'react-refresh/only-export-components': 'off',
+    },
+  },
+
+  // beforeLoad-гварды TanStack бросают redirect() — это не Error, а сигнал роутера
+  {
+    files: ['src/routes/**'],
+    rules: {
+      '@typescript-eslint/only-throw-error': 'off',
     },
   },
 

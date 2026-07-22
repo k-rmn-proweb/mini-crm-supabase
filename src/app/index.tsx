@@ -1,11 +1,35 @@
+import { useEffect } from 'react'
 import { RouterProvider } from '@tanstack/react-router'
+import { AuthProvider, useAuth } from '@/entities/user'
 import { AppProviders } from './providers'
 import { router } from './router'
+
+function InnerApp() {
+  const auth = useAuth()
+  const userId = auth.session?.user.id
+
+  useEffect(() => {
+    // При смене пользователя (login/logout) пересчитать гварды роутов.
+    void router.invalidate()
+  }, [userId])
+
+  if (auth.isLoading) {
+    return (
+      <div className="flex min-h-svh items-center justify-center text-sm text-muted-foreground">
+        Загрузка…
+      </div>
+    )
+  }
+
+  return <RouterProvider router={router} context={{ auth }} />
+}
 
 export function App() {
   return (
     <AppProviders>
-      <RouterProvider router={router} />
+      <AuthProvider>
+        <InnerApp />
+      </AuthProvider>
     </AppProviders>
   )
 }

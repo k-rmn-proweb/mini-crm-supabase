@@ -3,6 +3,10 @@ node_modules/
 .pnp
 .pnp.js
 
+# Supabase CLI (локальное состояние)
+supabase/.temp/
+supabase/.branches/
+
 # Build output
 dist/
 dist-ssr/

@@ -37,10 +37,34 @@ function DialogOverlay({
   )
 }
 
+/**
+ * Дефолт при открытии: фокус на первом поле, курсор в конец — без выделения текста
+ * (Radix авто-фокусирует первый инпут, а браузер выделяет его содержимое).
+ */
+function focusFirstFieldToEnd(event: Event) {
+  const content = event.currentTarget
+  if (!(content instanceof HTMLElement)) {
+    return
+  }
+  const field = content.querySelector('input, textarea')
+  if (!(field instanceof HTMLInputElement || field instanceof HTMLTextAreaElement)) {
+    return
+  }
+  event.preventDefault()
+  field.focus()
+  try {
+    const end = field.value.length
+    field.setSelectionRange(end, end)
+  } catch {
+    // input type без поддержки selection (number/date/email) — оставляем просто фокус
+  }
+}
+
 function DialogContent({
   className,
   children,
   showCloseButton = true,
+  onOpenAutoFocus,
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Content> & {
   showCloseButton?: boolean
@@ -50,6 +74,7 @@ function DialogContent({
       <DialogOverlay />
       <DialogPrimitive.Content
         data-slot="dialog-content"
+        onOpenAutoFocus={onOpenAutoFocus ?? focusFirstFieldToEnd}
         className={cn(
           'fixed top-1/2 left-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-4 rounded-xl bg-popover p-4 text-sm text-popover-foreground ring-1 ring-foreground/10 duration-100 outline-none sm:max-w-sm data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95',
           className,

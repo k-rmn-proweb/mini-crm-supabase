@@ -80,24 +80,7 @@ export function ClientFormDialog({ open, onOpenChange, client }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent
-        className="sm:max-w-md"
-        onOpenAutoFocus={(event) => {
-          // Radix фокусирует первый инпут, а браузер выделяет его текст.
-          // Оставляем фокус на имени, но курсор — в конец (без выделения).
-          const content = event.currentTarget
-          if (!(content instanceof HTMLElement)) {
-            return
-          }
-          const input = content.querySelector('input')
-          if (!input) {
-            return
-          }
-          event.preventDefault()
-          input.focus()
-          input.setSelectionRange(input.value.length, input.value.length)
-        }}
-      >
+      <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>{isEdit ? 'Редактировать клиента' : 'Новый клиент'}</DialogTitle>
           <DialogDescription>
